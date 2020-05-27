@@ -29,17 +29,27 @@ function addRandomFact() {
 
 function audioPlayer() {
   console.log('Running audio player.');
+  
+  // First song in the list is set as the current song.
   currentSong = 0;
+  
   player = document.getElementById('audio-player');
   songs = document.querySelectorAll('#song-list li a');
-  console.log('Adding Event Listener to song links...');
+  
+  // Modifying the click event for the links to play the song.
   songs.forEach((song, index, songList) => {
     song.addEventListener('click', (event) => {
       console.log('Clicked song.');
+      
+      // Default behaviour of links takes client to another page which is unwanted.
       event.preventDefault();
+      
+      // Change the previously played song classname to be empty as it is no longer the current song.
       songList[currentSong].parentNode.className = '';
-      player.src = song.href;
+      
+      // Play the current song and add a class of current-song for styling
       song.parentNode.className = 'current-song';
+      player.src = song.href;
       currentSong = index;
       player.play();
     }, false);
