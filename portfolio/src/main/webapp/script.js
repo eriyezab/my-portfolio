@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random fact to the page.
  */
 function addRandomFact() {
   const facts =
@@ -26,3 +26,25 @@ function addRandomFact() {
   const factContainer = document.getElementById('fact-container');
   factContainer.innerText = fact;
 }
+
+function audioPlayer() {
+  console.log('Running audio player.');
+  currentSong = 0;
+  player = document.getElementById('audio-player');
+  songs = document.querySelectorAll('#song-list li a');
+  console.log('Adding Event Listener to song links...');
+  songs.forEach((song, index, songList) => {
+    song.addEventListener('click', (event) => {
+      console.log('Clicked song.');
+      event.preventDefault();
+      songList[currentSong].parentNode.className = '';
+      player.src = song.href;
+      song.parentNode.className = 'current-song';
+      currentSong = index;
+    }, false);
+  });
+}
+
+audioPlayer();
+
+
