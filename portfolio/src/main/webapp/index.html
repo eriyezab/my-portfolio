@@ -2,14 +2,82 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Eriyeza's Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
   <body>
     <div id="content">
-      <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
+      <h1>Eriyeza's Portfolio</h1>
+      <div id="About Me">
+        <h2>About Me</h2>
+        <div id="whoiam">
+            <h3>Who I am</h3>
+            <p>My name is Eriyeza Buwembo and I am going into my third year of Computer science at the 
+                University of Toronto. I was born in Regina, Saskatchewan, Canada and am the youngest of 4
+                siblings. My parents were both born in Uganda and I visit there around every other year.</p>
+        </div>
+        <div id="interests">
+            <h3>Interests</h3>
+            <div id="basketball">
+                <h4>Basketball</h4>
+                <p>I've played basketball for almost my entire life and was fortunate to be given the 
+                    opportunity to play in University. Due to injuries, I decided not to continue playing 
+                    competetively but I still love playing for fun with friends and in Intramurals. I also
+                    enjoy watching the NBA and my favourite player would have to be Kevin Durant.</p>
+            </div>
+            <div id="animemanga">
+                <h4>Anime/Manga</h4>
+                <p>I was first introduced to anime in grade 6 with Attack on Titan, but did not start watching
+                    actively until high school when my friends introduced me to One Piece. I got around 120 episodes 
+                    in before my other friends started watching Naruto and I decided to watch with them. Naruto and 
+                    Naruto Shippuden were the first anime that I completed. After completing them, I went back to One 
+                    Piece and caught up to the latest episode at the time which was around 750. I was extremely eager to 
+                    continue so I decided to start the manga where the anime left off and that was the beginning of my
+                    manga reading career. Since then I have watched a lot of different anime and started reading the manga
+                    of some anime that I really enjoyed. As of May 2020, my favourite anime of all time is Hunter x Hunter 2011.</p>
+            </div>
+            <div id="music">
+                <h4>Music</h4>
+                <p>Being the youngest of 4 siblings, I grew up listening to a combination of the music that my older siblings
+                    listened to. My sister played the piano and I also played the violin and the viola until I started high school. 
+                    These things largely shaped my music taste. My favourite genre to listen to is Hip Hop and R&B but I am open to
+                    listening to almost any music other than country music. I enjoy going to orchestras and the music score of a movie
+                    largely influences whether I'll like it or love it. My favourite Hip Hop Artists include Kanye West, Drake, 
+                    Childish Gambino, Travis Scott, Frank Ocean, and many more. Notable film score composers I like are Hans Zimmer,
+                    Ludwig Goransson, and John Williams.</p>
+            </div>
+        </div>
+        <div id="experience">
+            <h2>Experience</h2>
+            <div id="work">
+                <h3>Work</h3>
+                <div id="fivetran">
+			<h4>Fivetran</h4>
+			<p>I was a Product Analyst Intern at Fivetran from the beginning of June until the end of July in 2019. One of the
+		        projects I did there was to create a dashboard that illustrated new user retention across trial steps in a given month. This 
+			gave product designers insight as to where potential clients were having trouble with the trial and steps that may need
+			improving.</p>
+                </div>
+            </div>
+            <div id="projects">
+		<h3>Projects</h3>
+                <div id="mangatracker">
+			<h4>Manga Tracker</h4>
+			<p>As mentioned earlier in my interests, I enjoy reading manga and I used to read them from websites online.
+			I found that checking the website to see if there was a new chapter for all of the manga that I was reading
+			was very tedious and was often a waste of time if there were no new chapters. Their sites were usually filled
+			with lots of ads and popups which made visiting them very unpleasant. There was also pressure to read the 
+			chapters as soon as they were released in order to avoid getting spoiled from other sources such as social media 
+			or friends. I decided to make a web scraper using python that would find out if there was a new release for the 
+			manga that I read and would send an email with the chapters as attachments. I had set this script to run every hour 
+			so I now get chapters almost as soon as they are released and the emails contain just the pages with no ads so
+			it makes for a pleasurable reading experience.
+                </div>
+            </div>
+        </div>
+
+      </div>
       <p>Click here to get a random message:</p>
       <button onclick="addRandomGreeting()">Hello</button>
       <div id="greeting-container"></div>
