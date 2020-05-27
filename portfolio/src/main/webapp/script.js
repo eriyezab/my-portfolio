@@ -19,7 +19,7 @@ function addRandomFact() {
   const facts =
       ['I am the youngest in my family by 12.5 years.', 'I have 4 nephews.', 'I have been to every continent except South America and Antarctica.'];
 
-  // Pick a random greeting.
+  // Pick a random fact.
   const fact = facts[Math.floor(Math.random() * facts.length)];
 
   // Add it to the page.
