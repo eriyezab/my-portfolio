@@ -41,6 +41,7 @@ function audioPlayer() {
       player.src = song.href;
       song.parentNode.className = 'current-song';
       currentSong = index;
+      player.play();
     }, false);
   });
 }
