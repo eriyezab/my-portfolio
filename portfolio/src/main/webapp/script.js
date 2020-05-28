@@ -13,16 +13,49 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random fact to the page.
  */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+function addRandomFact() {
+  const facts =
+      ['I am the youngest in my family by 12.5 years.', 'I have 4 nephews.', 'I have been to every continent except South America and Antarctica.'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  // Pick a random fact.
+  const fact = facts[Math.floor(Math.random() * facts.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const factContainer = document.getElementById('fact-container');
+  factContainer.innerText = fact;
 }
+
+function audioPlayer() {
+  console.log('Running audio player.');
+  
+  // First song in the list is set as the current song.
+  currentSong = 0;
+  
+  player = document.getElementById('audio-player');
+  songs = document.querySelectorAll('#song-list li a');
+  
+  // Modifying the click event for the links to play the song.
+  songs.forEach((song, index, songList) => {
+    song.addEventListener('click', (event) => {
+      console.log('Clicked song.');
+      
+      // Default behaviour of links takes client to another page which is unwanted.
+      event.preventDefault();
+      
+      // Change the previously played song classname to be empty as it is no longer the current song.
+      songList[currentSong].parentNode.className = '';
+      
+      // Play the current song and add a class of current-song for styling
+      song.parentNode.className = 'current-song';
+      player.src = song.href;
+      currentSong = index;
+      player.play();
+    }, false);
+  });
+}
+
+audioPlayer();
+
+
