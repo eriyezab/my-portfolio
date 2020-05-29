@@ -43,49 +43,71 @@
             <img src="images/self_portrait.jpeg" class="card-img rounded " alt="Eriyeza Buwembo">
           </div>
         </div>
+        <!-- Interests Section -->
         <div id="interests">
-          <h3>Interests</h3>
-          <div id="basketball">
-            <h4>Basketball</h4>
-            <p>I've played basketball for almost my entire life and was fortunate to be given the 
-                opportunity to play in University. Due to injuries, I decided not to continue playing 
-                competetively but I still love playing for fun with friends and in Intramurals. I also
-                enjoy watching the NBA and my favourite player would have to be Kevin Durant.</p>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/e0cKk6Vhyws" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div id="animemanga">
-            <h4>Anime/Manga</h4>
-            <p>I was first introduced to anime in grade 6 with Attack on Titan, but did not start watching
-                actively until high school when my friends introduced me to One Piece. I got around 120 episodes 
-                in before my other friends started watching Naruto and I decided to watch with them. Naruto and 
-                Naruto Shippuden were the first anime that I completed. After completing them, I went back to One 
-                Piece and caught up to the latest episode at the time which was around 750. I was extremely eager to 
-                continue so I decided to start the manga where the anime left off and that was the beginning of my
-                manga reading career. Since then I have watched a lot of different anime and started reading the manga
-                of some anime that I really enjoyed. As of May 2020, my favourite anime of all time is Hunter x Hunter 2011.</p>
-          </div>
-          <div id="music">
-            <h4>Music</h4>
-            <p>Being the youngest of 4 siblings, I grew up listening to a combination of the music that my older siblings
-                listened to. My sister played the piano and I also played the violin and the viola until I started high school. 
-                These things largely shaped my music taste. My favourite genre to listen to is Hip Hop and R&B but I am open to
-                listening to almost any music other than country music. I enjoy going to orchestras and the music score of a movie
-                largely influences whether I'll like it or love it. My favourite Hip Hop Artists include Kanye West, Drake, 
-                Childish Gambino, Travis Scott, Frank Ocean, and many more. Notable film score composers I like are Hans Zimmer,
-                Ludwig Goransson, and John Williams.</p>
-            <h3>My Favourite Songs</h3>
-            <p>Here is a list of some of my favourite songs at the moment. Click on one to listen!</p>
-            <audio src="audio/flight_of_the_navigator.mp3" id="audio-player" controls preload="auto">
-              <p>If you are reading this then your browser does not support the audio tag</p>
-            </audio>
-            <ul id="song-list">
-              <li class="current-song"><a href="audio/flight_of_the_navigator.mp3">Flight of the Navigator - Childish Gambino</a></li>
-              <li><a href="audio/devil_in_a_new_dress.mp3">Devil in a New Dress - Kanye West ft. Rick Ross</a></li>
-              <li><a href="audio/chicago_freestyle.mp3">Chicago Freestyle - Drake ft. Giveon</a></li>
-              <li><a href="audio/90210.mp3">90210 - Travis Scott ft. Kacy Hill</a></li>
-              <li><a href="audio/nights.mp3">Nights - Frank Ocean</a></li>
-            </ul>
-          </div>
+          <h3 class="text-center display-3">Interests</h3>
+          <div class="card">
+            <div class="card-header"> 
+                <ul class="nav nav-tabs card-header-tabs"  id="interest-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="basketball-tab" data-toggle="tab" href="#basketball" role="tab" aria-controls="basketball" aria-selected="true">Basketball</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="animemanga-tab" data-toggle="tab" href="#animemanga" role="tab" aria-controls="animemanga" aria-selected="false">Anime/Manga</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="music-tab" data-toggle="tab" href="#music" role="tab" aria-controls="music" aria-selected="false">Music</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body">
+                <div class="tab-content" id="interest-content">
+                    <div class="tab-pane fade show active" id="basketball" role="tabpanel" aria-labelledby="basketball-tab">
+                      <h4 class="card-title display-4">Basketball</h4>
+                      <p>I've played basketball for almost my entire life and was fortunate to be given the 
+                          opportunity to play in University. Due to injuries, I decided not to continue playing 
+                          competetively but I still love playing for fun with friends and in Intramurals. I also
+                          enjoy watching the NBA and my favourite player would have to be Kevin Durant.</p>
+                      <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/e0cKk6Vhyws" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="animemanga" role="tabpanel" aria-labelledby="animemanga-tab">
+                      <h4 class="card-title display-4">Anime & Manga</h4>
+                      <p>I was first introduced to anime in grade 6 with Attack on Titan, but did not start watching
+                          actively until high school when my friends introduced me to One Piece. I got around 120 episodes 
+                          in before my other friends started watching Naruto and I decided to watch with them. Naruto and 
+                          Naruto Shippuden were the first anime that I completed. After completing them, I went back to One 
+                          Piece and caught up to the latest episode at the time which was around 750. I was extremely eager to 
+                          continue so I decided to start the manga where the anime left off and that was the beginning of my
+                          manga reading career. Since then I have watched a lot of different anime and started reading the manga
+                          of some anime that I really enjoyed. As of May 2020, my favourite anime of all time is Hunter x Hunter 2011.</p>
+                    </div>
+                    <div class="tab-pane fade" id="music" role="tabpanel" aria-labelledby="music-tab">
+                      <h4 class="card-title display-4">Music</h4>
+                      <p>Being the youngest of 4 siblings, I grew up listening to a combination of the music that my older siblings
+                          listened to. My sister played the piano and I also played the violin and the viola until I started high school. 
+                          These things largely shaped my music taste. My favourite genre to listen to is Hip Hop and R&B but I am open to
+                          listening to almost any music other than country music. I enjoy going to orchestras and the music score of a movie
+                          largely influences whether I'll like it or love it. My favourite Hip Hop Artists include Kanye West, Drake, 
+                          Childish Gambino, Travis Scott, Frank Ocean, and many more. Notable film score composers I like are Hans Zimmer,
+                          Ludwig Goransson, and John Williams.</p>
+                      <h5>My Favourite Songs</h5>
+                      <p>Here is a list of some of my favourite songs at the moment. Click on one to listen!</p>
+                      <audio src="audio/flight_of_the_navigator.mp3" id="audio-player" controls preload="auto">
+                        <p>If you are reading this then your browser does not support the audio tag</p>
+                      </audio>
+                      <ul id="song-list">
+                        <li class="current-song"><a href="audio/flight_of_the_navigator.mp3">Flight of the Navigator - Childish Gambino</a></li>
+                        <li><a href="audio/devil_in_a_new_dress.mp3">Devil in a New Dress - Kanye West ft. Rick Ross</a></li>
+                        <li><a href="audio/chicago_freestyle.mp3">Chicago Freestyle - Drake ft. Giveon</a></li>
+                        <li><a href="audio/90210.mp3">90210 - Travis Scott ft. Kacy Hill</a></li>
+                        <li><a href="audio/nights.mp3">Nights - Frank Ocean</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="experience">
           <h2>Experience</h2>
