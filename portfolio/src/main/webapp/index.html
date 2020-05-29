@@ -21,17 +21,27 @@
         </div>
       </div>
     </header>
-    <div id="content">
-      <div id="aboutme">
-        <h2>About Me</h2>
-        <div id="whoiam">
-          <h3>Who I am</h3>
-          <p>My name is Eriyeza Buwembo and I am going into my third year of Computer science at the 
-              University of Toronto. I was born in Regina, Saskatchewan, Canada and am the youngest of 4
-              siblings. My parents were both born in Uganda and I visit there around every other year.</p>
-          <p>Click for a random fact about me:</p>
-          <div id="fact-container"></div>
-          <button onclick="addRandomFact()">Random Fact!</button>
+    <div id="content" class="container-fluid padding mt-4">
+      <div id="aboutme" class="col-12">
+        <div class="row no-gutters">
+          <div class="card mb-3 col-lg-8 text-center">
+            <div id="whoiam">
+              <div class="card-body">
+                <h5 class="card-title display-3" align="center">Who am I</h5>
+                  <p class="card-text">My name is Eriyeza Buwembo and I am going into my third year of Computer science at the 
+                  University of Toronto. I was born in Regina, Saskatchewan, Canada and am the youngest of 4
+                  siblings. My parents were both born in Uganda and I visit there around every other year.</p>
+                  <div align="center">
+                    <p class="card-text"><small class="text-muted">Click for a random fact about me:</small></p>
+                    <div id="fact-container" class="blockquote font-italic font-weight-light"></div>
+                    <button class="btn btn-lg btn-primary" onclick="addRandomFact()">Random Fact!</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-3 col-lg-4">
+            <img src="images/self_portrait.jpeg" class="card-img rounded " alt="Eriyeza Buwembo">
+          </div>
         </div>
         <div id="interests">
           <h3>Interests</h3>
