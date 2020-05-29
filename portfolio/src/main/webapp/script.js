@@ -19,7 +19,7 @@ function addRandomFact() {
   const facts =
       ['I am the youngest in my family by 12.5 years.', 'I have 4 nephews.', 'I have been to every continent except South America and Antarctica.'];
 
-  // Pick a random greeting.
+  // Pick a random fact.
   const fact = facts[Math.floor(Math.random() * facts.length)];
 
   // Add it to the page.
@@ -29,17 +29,27 @@ function addRandomFact() {
 
 function audioPlayer() {
   console.log('Running audio player.');
+  
+  // First song in the list is set as the current song.
   currentSong = 0;
+  
   player = document.getElementById('audio-player');
   songs = document.querySelectorAll('#song-list li a');
-  console.log('Adding Event Listener to song links...');
+  
+  // Modifying the click event for the links to play the song.
   songs.forEach((song, index, songList) => {
     song.addEventListener('click', (event) => {
       console.log('Clicked song.');
+      
+      // Default behaviour of links takes client to another page which is unwanted.
       event.preventDefault();
+      
+      // Change the previously played song classname to be empty as it is no longer the current song.
       songList[currentSong].parentNode.className = '';
-      player.src = song.href;
+      
+      // Play the current song and add a class of current-song for styling
       song.parentNode.className = 'current-song';
+      player.src = song.href;
       currentSong = index;
       player.play();
     }, false);
