@@ -1,4 +1,6 @@
-
+html {
+    scroll-behavior: smooth;
+}
 
 .showcase {
   background: rgba(0, 0, 0, 1);
