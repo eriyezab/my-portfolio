@@ -18,11 +18,11 @@
  */
 function addRandomFact() {
   // Request for a random fact from server 
-  console.log("Fetching quote from server...");
+  console.log("Fetching fact from server...");
   const factPromise = fetch('/random-fact').then((res) => res.text());
 
   // Add it to the page.
-  console.log("Adding quote to page...");
+  console.log("Adding fact to page...");
   factPromise.then((fact) => {
     const factContainer = document.getElementById('fact-container');
     factContainer.innerText = fact;
