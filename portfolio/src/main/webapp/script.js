@@ -17,11 +17,9 @@
  * Adds a random fact to the page.
  */
 function addRandomFact() {
-
   // Request for a random fact from server 
   console.log("Fetching quote from server...");
   const factPromise = fetch('/random-fact').then((res) => res.text());
-
 
   // Add it to the page.
   console.log("Adding quote to page...");
@@ -30,8 +28,6 @@ function addRandomFact() {
     factContainer.innerText = fact;
     console.log("Added fact to page: " + fact);
   });
-
-  
 }
 
 function audioPlayer() {
@@ -64,5 +60,3 @@ function audioPlayer() {
 }
 
 audioPlayer();
-
-
