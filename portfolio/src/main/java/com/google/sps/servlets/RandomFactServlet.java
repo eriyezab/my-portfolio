@@ -25,14 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet that returns a random fact about me. */
 @WebServlet("/random-fact")
 public final class RandomFactServlet extends HttpServlet {
-
   private List<String> facts;
 
   @Override
   public void init() {
     facts = new ArrayList<>();
-    facts.add(
-"I have 4 nephews.");
+    facts.add("I have 4 nephews.");
     facts.add("I have been to every continent except South America and Antarctica.");
     facts.add("I am the youngest in my family by 12.5 years.");
     facts.add("I was born and raised in Regina, Saskatchewan, Canada.");
