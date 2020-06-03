@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -26,16 +27,12 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  private ArrayList<Comment> comments = new ArrayList<>();
+
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    //Create a list of comments
-    ArrayList<String> comments = new ArrayList<String>(3);
-    comments.add("What other anime have you watched?");
-    comments.add("How old are your nephews?");
-    comments.add("How do you like U of T?");
-
     // Convert comments list to JSON
     Gson gson = new Gson();
     String json = gson.toJson(comments);
@@ -43,5 +40,35 @@ public class DataServlet extends HttpServlet {
     // Send json to server
     response.setContentType("applications/json;");
     response.getWriter().println(json);
+    System.out.println("Sent json to client.");
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get input from the form.
+    String name = getParameter(request, "name", "Anonymous");
+    String message = getParameter(request, "message", "No comment.");
+    System.out.println("Retireved input from form.");
+
+    // Add the comment to the arraylist.
+    Comment newComment = new Comment(name, message, System.currentTimeMillis());
+    comments.add(newComment);
+    System.out.println("Added comment to list.");
+
+    // Redirect back to the comments page.
+    response.sendRedirect("/comments.html");
+    System.out.println("Redirecting user.");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name).strip();
+    if (value == null || value == "") {
+      return defaultValue;
+    }
+    return value;
   }
 }
