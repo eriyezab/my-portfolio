@@ -19,7 +19,12 @@ function getComments() {
     for(i = 0; i < comments.length; ++i) {
       const commentsList = document.getElementById('comments-list');
       let listNode = document.createElement("LI");
-      let textNode = document.createTextNode(comments[i].name + ' at ' + timestampToDate(comments[i].timestamp) + ': ' + comments[i].message);
+      let textNode = 
+          document.createTextNode(comments[i].name + 
+                                  ' at ' + 
+                                  timestampToDate(comments[i].timestamp) + 
+                                  ': ' + 
+                                  comments[i].message);
       listNode.appendChild(textNode);
       commentsList.appendChild(listNode);
     }
