@@ -46,8 +46,17 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get input from the form.
     String name = getParameter(request, "name", "Anonymous");
-    String message = getParameter(request, "message", "No comment.");
+    String message = getParameter(request, "message", null);
     System.out.println("Retireved input from form.");
+
+    // If the message was empty then do not add to list 
+    if(message == null) {
+      System.out.println("Invalid message. Comment not added.");
+      String queryString = "comment-posted=false";
+      String url = createRedirectURL(request, queryString);
+      response.sendRedirect(url);
+      return;
+    }
 
     // Add the comment to the arraylist.
     Comment newComment = new Comment(name, message, System.currentTimeMillis());
@@ -55,7 +64,7 @@ public class DataServlet extends HttpServlet {
     System.out.println("Added comment to list.");
 
     // Redirect back to the comments page.
-    response.sendRedirect("/comments.html");
+    response.sendRedirect("/comments.html?comment-posted=true");
     System.out.println("Redirecting user.");
   }
 
@@ -69,5 +78,22 @@ public class DataServlet extends HttpServlet {
       return defaultValue;
     }
     return value;
+  }
+
+  /**
+   * Create a redirect url from the request given the request and a query string to be appended.
+   *
+   * @return the constructed url as a string
+   */
+  private String createRedirectURL(HttpServletRequest request,  String queryString) {
+    String fullQueryString;
+    if(request.getQueryString() == null) {
+      fullQueryString = queryString;
+    } else {
+      fullQueryString = request.getQueryString() + "&" + queryString;
+    }
+
+    String redirectURL = "/comments.html?" + fullQueryString;
+    return redirectURL;
   }
 }
