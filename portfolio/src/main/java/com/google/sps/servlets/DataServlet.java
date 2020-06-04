@@ -29,7 +29,6 @@ public class DataServlet extends HttpServlet {
 
   private ArrayList<Comment> comments = new ArrayList<>();
 
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
@@ -62,7 +61,7 @@ public class DataServlet extends HttpServlet {
 
   /**
    * @return the request parameter, or the default value if the parameter
-   *         was not specified by the client
+   * was not specified by the client
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name).strip();
