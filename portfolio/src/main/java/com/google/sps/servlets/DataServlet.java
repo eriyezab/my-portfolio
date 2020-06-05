@@ -32,13 +32,13 @@ import com.google.gson.Gson;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  private static final Query QUERY = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+  private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
+  private static final Gson GSON = new Gson();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+    PreparedQuery results = DATASTORE.prepare(QUERY);
     
     ArrayList<Comment> comments = new ArrayList<>();
     for(Entity entity: results.asIterable()) {
@@ -52,8 +52,7 @@ public class DataServlet extends HttpServlet {
     }
 
     // Convert comments list to JSON
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
+    String json = GSON.toJson(comments);
 
     // Send json to server
     response.setContentType("applications/json;");
@@ -76,8 +75,7 @@ public class DataServlet extends HttpServlet {
     commentEntity.setProperty("timestamp", timestamp);
 
     // Add comment entity to datastore
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
+    DATASTORE.put(commentEntity);
 
     // Redirect back to the comments page.
     response.sendRedirect("/comments.html");
