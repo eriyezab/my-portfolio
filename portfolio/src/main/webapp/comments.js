@@ -10,6 +10,15 @@ function timestampToDate(timestamp) {
   return formattedTime;
 }
 
+function checkCommentPosted() {
+  const url = new URL(window.location.href);
+  const posted = url.searchParams.get("comment-posted");
+  if(posted === "false") {
+    window.alert("Comment not posted!");
+    console.log("The comment was not posted.");
+  }
+}
+
 function getComments() {
   fetch("/data")
   .then(res => res.json())
@@ -19,11 +28,18 @@ function getComments() {
     for(i = 0; i < comments.length; ++i) {
       const commentsList = document.getElementById('comments-list');
       let listNode = document.createElement("LI");
-      let textNode = document.createTextNode(comments[i].name + ' at ' + timestampToDate(comments[i].timestamp) + ': ' + comments[i].message);
+      let textNode = 
+          document.createTextNode(comments[i].name + 
+                                  ' at ' + 
+                                  timestampToDate(comments[i].timestamp) + 
+                                  ': ' + 
+                                  comments[i].message);
       listNode.appendChild(textNode);
       commentsList.appendChild(listNode);
     }
   });
+
+  checkCommentPosted();
 }
 
 getComments();

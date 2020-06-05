@@ -15,7 +15,7 @@
 package com.google.sps.data;
 
 /**
- * Class representing a comment that t users create.
+ * Class representing a comment that the users create.
  *
  * <p>Note: The private variables in this class are converted into JSON.
  */
@@ -39,4 +39,6 @@ public class Comment {
     this.message = message;
     this.timestamp = timestamp;
   }
+  
+  // TODO: Add getters for private attributes
 }
