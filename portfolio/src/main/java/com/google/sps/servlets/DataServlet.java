@@ -69,10 +69,7 @@ public class DataServlet extends HttpServlet {
     System.out.println("Retireved input from form.");
 
     // Create comment entity
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("name", name);
-    commentEntity.setProperty("message", message);
-    commentEntity.setProperty("timestamp", timestamp);
+    Entity commentEntity = createCommentEntity(name, message, timestamp);
 
     // Add comment entity to datastore
     DATASTORE.put(commentEntity);
@@ -92,5 +89,13 @@ public class DataServlet extends HttpServlet {
       return defaultValue;
     }
     return value;
+  }
+
+  private Entity createCommentEntity(String name, String message, long timestamp) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("message", message);
+    commentEntity.setProperty("timestamp", timestamp);
+    return commentEntity;
   }
 }
