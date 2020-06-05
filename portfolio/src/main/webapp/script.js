@@ -12,19 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 /**
  * Adds a random fact to the page.
  */
 function addRandomFact() {
-  const facts =
-      ['I am the youngest in my family by 12.5 years.', 'I have 4 nephews.', 'I have been to every continent except South America and Antarctica.'];
-
-  // Pick a random fact.
-  const fact = facts[Math.floor(Math.random() * facts.length)];
+  // Request for a random fact from server 
+  console.log("Fetching fact from server...");
+  const factPromise = fetch('/random-fact').then((res) => res.text());
 
   // Add it to the page.
-  const factContainer = document.getElementById('fact-container');
-  factContainer.innerText = fact;
+  console.log("Adding fact to page...");
+  factPromise.then((fact) => {
+    const factContainer = document.getElementById('fact-container');
+    factContainer.innerText = fact;
+    console.log("Added fact to page: " + fact);
+  });
 }
 
 function audioPlayer() {
@@ -57,5 +60,3 @@ function audioPlayer() {
 }
 
 audioPlayer();
-
-
