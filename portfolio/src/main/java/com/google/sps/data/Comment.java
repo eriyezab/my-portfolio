@@ -35,4 +35,6 @@ public class Comment {
     this.message = message;
     this.timestamp = timestamp;
   }
+  
+  // TODO: Add getters for private attributes
 }
