@@ -79,8 +79,13 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
+   * Retrieve the value of the parameter from the HTTP request.
+   *
+   * @param request The HTTP request object
+   * @param name The name of the parameter being retrieved from the request
+   * @param defaultValue The value to be returned if the request parameter is null or empty
    * @return the request parameter, or the default value if the parameter
-   * was not specified by the client
+   * was not specified by the client as a string or null.
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name).strip();
@@ -93,6 +98,8 @@ public class DataServlet extends HttpServlet {
   /**
    * Create a redirect url from the request given the request and a query string to be appended.
    *
+   * @param request The HTTP request object
+   * @param queryString the parameters to be added to the url as a string
    * @return the constructed url as a string
    */
   private String createRedirectURL(HttpServletRequest request,  String queryString) {
