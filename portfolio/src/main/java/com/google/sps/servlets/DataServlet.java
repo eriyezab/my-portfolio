@@ -15,6 +15,12 @@
 package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -26,15 +32,27 @@ import com.google.gson.Gson;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-
-  private ArrayList<Comment> comments = new ArrayList<>();
+  private static final Query QUERY = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+  private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
+  private static final Gson GSON = new Gson();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    PreparedQuery results = DATASTORE.prepare(QUERY);
     
+    ArrayList<Comment> comments = new ArrayList<>();
+    for(Entity entity: results.asIterable()) {
+      long id = entity.getKey().getId();
+      String name = (String) entity.getProperty("name");
+      String message = (String) entity.getProperty("message");
+      long timestamp = (long) entity.getProperty("timestamp");
+
+      Comment comment = new Comment(id, name, message, timestamp);
+      comments.add(comment);
+    }
+
     // Convert comments list to JSON
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
+    String json = GSON.toJson(comments);
 
     // Send json to server
     response.setContentType("applications/json;");
@@ -49,11 +67,13 @@ public class DataServlet extends HttpServlet {
     // Get input from the form.
     String name = getParameter(request, "name", "Anonymous");
     String message = getParameter(request, "message", null);
+    long timestamp = System.currentTimeMillis();
+    System.out.println("Retireved input from form.");
 
     // TODO: Remove later
     System.out.println("Retireved input from form.");
 
-    // If the message was empty then do not add to list 
+    // If the message was empty then do not add to datastore 
     if(message == null) {
       // TODO: Remove later
       System.out.println("Invalid message. Comment not added.");
@@ -64,12 +84,14 @@ public class DataServlet extends HttpServlet {
       return;
     }
 
-    // Add the comment to the arraylist.
-    Comment newComment = new Comment(name, message, System.currentTimeMillis());
-    comments.add(newComment);
+    // Create comment entity
+    Entity commentEntity = createCommentEntity(name, message, timestamp);
+
+    // Add comment entity to datastore
+    DATASTORE.put(commentEntity);
 
     // TODO: Remove later
-    System.out.println("Added comment to list.");
+    System.out.println("Added comment to datastore.");
 
     // Redirect back to the comments page.
     response.sendRedirect("/comments.html?comment-posted=true");
@@ -96,6 +118,22 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
+   * Create a comment entity to be inserted into the datastore.
+   * 
+   * @param name The name of the user who created the comment
+   * @param message The content of the comment
+   * @param timestamp The time the user made the comment
+   * @return An instance of entity that contains the properties of the comment
+   */
+  private Entity createCommentEntity(String name, String message, long timestamp) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("message", message);
+    commentEntity.setProperty("timestamp", timestamp);
+    return commentEntity;
+  }
+
+  /**
    * Create a redirect url from the request given the request and a query string to be appended.
    *
    * @param request The HTTP request object
@@ -112,5 +150,6 @@ public class DataServlet extends HttpServlet {
 
     String redirectURL = "/comments.html?" + fullQueryString;
     return redirectURL;
+
   }
 }

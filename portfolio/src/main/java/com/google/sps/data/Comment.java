@@ -21,6 +21,9 @@ package com.google.sps.data;
  */
 public class Comment {
 
+  /** The id of the comment in datastore. */
+  private long id;
+
   /** The name of the user who commented. */
   private String name;
 
@@ -30,7 +33,8 @@ public class Comment {
   /** The time the user made the comment. */
   private long timestamp;
   
-  public Comment(String name, String message, long timestamp) {
+  public Comment(long id, String name, String message, long timestamp) {
+    this.id = id;
     this.name = name;
     this.message = message;
     this.timestamp = timestamp;
