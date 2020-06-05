@@ -39,6 +39,8 @@ public class DataServlet extends HttpServlet {
     // Send json to server
     response.setContentType("applications/json;");
     response.getWriter().println(json);
+
+    // TODO: Remove later
     System.out.println("Sent json to client.");
   }
 
@@ -47,11 +49,15 @@ public class DataServlet extends HttpServlet {
     // Get input from the form.
     String name = getParameter(request, "name", "Anonymous");
     String message = getParameter(request, "message", null);
+
+    // TODO: Remove later
     System.out.println("Retireved input from form.");
 
     // If the message was empty then do not add to list 
     if(message == null) {
+      // TODO: Remove later
       System.out.println("Invalid message. Comment not added.");
+
       String queryString = "comment-posted=false";
       String url = createRedirectURL(request, queryString);
       response.sendRedirect(url);
@@ -61,10 +67,14 @@ public class DataServlet extends HttpServlet {
     // Add the comment to the arraylist.
     Comment newComment = new Comment(name, message, System.currentTimeMillis());
     comments.add(newComment);
+
+    // TODO: Remove later
     System.out.println("Added comment to list.");
 
     // Redirect back to the comments page.
     response.sendRedirect("/comments.html?comment-posted=true");
+
+    // TODO: Remove later
     System.out.println("Redirecting user.");
   }
 
