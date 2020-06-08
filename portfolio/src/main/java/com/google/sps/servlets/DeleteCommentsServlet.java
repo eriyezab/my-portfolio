@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet responsible for creating new comments. */
+/** Servlet responsible for deleting all comments. */
 @WebServlet("/delete-comments")
 public class DeleteCommentsServlet extends HttpServlet {
   private static final Query QUERY = new Query("Comment");
@@ -36,13 +36,8 @@ public class DeleteCommentsServlet extends HttpServlet {
     PreparedQuery results = DATASTORE.prepare(QUERY);
 
     for(Entity entity : results.asIterable()) {
-      //TODO: Remove later
-      System.out.println("Deleting comment made by: " + entity.getProperty("name"));
       DATASTORE.delete(entity.getKey());
     }
-
-    // TODO: Remove later
-    System.out.println("Deleted all comments.");
 
     response.sendRedirect("/comments.html?deleted=true");
   }
