@@ -99,8 +99,8 @@ public class DataServlet extends HttpServlet {
    * @return a Query object that will be used to query the datastore.
    */
   private Query makeQueryFromParams(HttpServletRequest request) {
-    String sortValue = getParameter(request, "sort-value", "Date");
-    String sortOrder = getParameter(request, "sort-order", "Ascending");
+    String sortValue = getParameter(request, "sort-value", "date");
+    String sortOrder = getParameter(request, "sort-order", "descending");
 
     String sortBy;
     if(sortValue.equals("name")) {
