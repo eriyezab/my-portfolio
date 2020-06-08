@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that sending and receiving comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
@@ -63,9 +63,6 @@ public class DataServlet extends HttpServlet {
     // Send json to server
     response.setContentType("applications/json;");
     response.getWriter().println(json);
-
-    // TODO: Remove later
-    System.out.println("Sent json to client.");
   }
 
   @Override
@@ -74,13 +71,9 @@ public class DataServlet extends HttpServlet {
     String name = getParameter(request, "name", "Anonymous");
     String message = getParameter(request, "message", null);
     long timestamp = System.currentTimeMillis();
-    System.out.println("Retrieved input from form.");
 
     // If the message was empty then do not add to datastore 
     if(message == null) {
-      // TODO: Remove later
-      System.out.println("Invalid message. Comment not added.");
-
       String queryString = "comment-posted=false";
       String url = createRedirectURL(request, queryString);
       response.sendRedirect(url);
@@ -96,7 +89,6 @@ public class DataServlet extends HttpServlet {
 
     // Redirect back to the comments page.
     response.sendRedirect("/comments.html");
-    System.out.println("Redirecting user.");
   }
 
   /**

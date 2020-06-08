@@ -32,11 +32,7 @@ function filterComments() {
   params.append("sort-value", sortValue);
   params.append("sort-order", sortOrder);
   
-  //TODO: Remove later
-  console.log(params.toString());
-
   const url = `/data?${params.toString()}`;
-
   return fetch(url);
 }
 
