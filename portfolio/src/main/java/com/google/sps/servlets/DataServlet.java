@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
-/** Servlet that sending and receiving comments.*/
+/** Servlet that handles sending and receiving comments.*/
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
