@@ -32,16 +32,22 @@ import com.google.gson.Gson;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  private static final Query QUERY = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
   private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
   private static final Gson GSON = new Gson();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    PreparedQuery results = DATASTORE.prepare(QUERY);
-    
+    // Get filter parameters
+    int maxComments = getNumComments(request);
+
+    Query query = makeQueryFromParams(request);
+    PreparedQuery results = DATASTORE.prepare(query);
+
     ArrayList<Comment> comments = new ArrayList<>();
     for(Entity entity: results.asIterable()) {
+      if(comments.size() == maxComments) {
+        break;
+      }
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
       String message = (String) entity.getProperty("message");
@@ -68,10 +74,7 @@ public class DataServlet extends HttpServlet {
     String name = getParameter(request, "name", "Anonymous");
     String message = getParameter(request, "message", null);
     long timestamp = System.currentTimeMillis();
-    System.out.println("Retireved input from form.");
-
-    // TODO: Remove later
-    System.out.println("Retireved input from form.");
+    System.out.println("Retrieved input from form.");
 
     // If the message was empty then do not add to datastore 
     if(message == null) {
@@ -83,21 +86,60 @@ public class DataServlet extends HttpServlet {
       response.sendRedirect(url);
       return;
     }
-
+    
     // Create comment entity
     Entity commentEntity = createCommentEntity(name, message, timestamp);
 
-    // Add comment entity to datastore
+    // Add comment entity to DATASTORE
+    DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
     DATASTORE.put(commentEntity);
 
-    // TODO: Remove later
-    System.out.println("Added comment to datastore.");
-
     // Redirect back to the comments page.
-    response.sendRedirect("/comments.html?comment-posted=true");
-
-    // TODO: Remove later
+    response.sendRedirect("/comments.html");
     System.out.println("Redirecting user.");
+  }
+
+  /**
+   * Construct the query that retrieves comments from the datastore
+   * using the parameters from the request.
+   *
+   * @param request The HTTP request that contains all the parameters.
+   * @return a Query object that will be used to query the datastore.
+   */
+  private Query makeQueryFromParams(HttpServletRequest request) {
+    String sortValue = getParameter(request, "sort-value", "Date");
+    String sortOrder = getParameter(request, "sort-order", "Ascending");
+
+    String sortBy;
+    if(sortValue.equals("name")) {
+      sortBy = "name";
+    }else {
+      sortBy = "timestamp";
+    }
+
+    if(sortOrder.equals("ascending")) {
+      return new Query("Comment").addSort(sortBy, SortDirection.ASCENDING);
+    }else {
+      return new Query("Comment").addSort(sortBy, SortDirection.DESCENDING);
+    }
+  }
+
+  /**
+   *
+   * Create an entity to insert into datastore
+   *
+   * @param name The name of the user that commented.
+   * @param message The message the user left.
+   * @param timestamp The time the user made the comment.
+   * @return an entity that can be put into the datastore containing
+   * the comment information.
+   */
+  private Entity createCommentEntity(String name, String message, long timestamp) {
+    Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("name", name);
+    commentEntity.setProperty("message", message);
+    commentEntity.setProperty("timestamp", timestamp);
+    return commentEntity;
   }
 
   /**
@@ -110,34 +152,21 @@ public class DataServlet extends HttpServlet {
    * was not specified by the client as a string or null.
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name).strip();
-    if (value == null || value == "") {
+    String value = request.getParameter(name);
+    if(value != null) {
+      value = value.trim();
+    }
+    if (value == null || value.equals("")) {
       return defaultValue;
     }
     return value;
   }
 
   /**
-   * Create a comment entity to be inserted into the datastore.
-   * 
-   * @param name The name of the user who created the comment
-   * @param message The content of the comment
-   * @param timestamp The time the user made the comment
-   * @return An instance of entity that contains the properties of the comment
-   */
-  private Entity createCommentEntity(String name, String message, long timestamp) {
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("name", name);
-    commentEntity.setProperty("message", message);
-    commentEntity.setProperty("timestamp", timestamp);
-    return commentEntity;
-  }
-
-  /**
    * Create a redirect url from the request given the request and a query string to be appended.
    *
    * @param request The HTTP request object
-   * @param queryString the parameters to be added to the url as a string
+   * @param queryString The parameters to be added to the url as a string
    * @return the constructed url as a string
    */
   private String createRedirectURL(HttpServletRequest request,  String queryString) {
@@ -150,6 +179,33 @@ public class DataServlet extends HttpServlet {
 
     String redirectURL = "/comments.html?" + fullQueryString;
     return redirectURL;
+  }
 
+  /**
+   * Get the max number of comments to be displayed from the request parameter
+   *
+   * @param request The HTTP request object
+   * @return the number of comments in the request paramter, or 5 if the 
+   *         parameterwas not specified by the client
+   */
+  private int getNumComments(HttpServletRequest request) {
+    String numCommentsString = request.getParameter("num-comments");
+
+    // Convert parameter to int
+    int numComments;
+    try {
+      numComments = Integer.parseInt(numCommentsString);
+    } catch (NumberFormatException e) {
+      System.err.println("Could not convert to int: " + numCommentsString);
+      return 5;
+    }
+
+    // Check that the integer is greater than or equal to 0
+    if (numComments < 0 ) {
+      System.err.println("Number of comments is too low: " + numCommentsString);
+      return 1;
+    }
+
+    return numComments;
   }
 }

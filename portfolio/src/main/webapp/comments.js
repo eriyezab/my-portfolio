@@ -1,3 +1,5 @@
+const FILTERS = document.getElementById("filters");
+
 function timestampToDate(timestamp) {
   const date = new Date(timestamp);
   const year = date.getFullYear();
@@ -19,8 +21,27 @@ function checkCommentPosted() {
   }
 }
 
+function filterComments() {
+  const numComments = FILTERS.querySelector("#num-comments").value;
+  const sortValue = FILTERS.querySelector("#sort-value").value;
+  const sortOrder = FILTERS.querySelector("#sort-order").value;
+
+  const params = new URLSearchParams();
+  params.append("num-comments", numComments);
+  params.append("sort-value", sortValue);
+  params.append("sort-order", sortOrder);
+  
+  //TODO: Remove later
+  console.log(params.toString());
+
+  const url = `/data?${params.toString()}`;
+
+  return fetch(url);
+}
+
 function getComments() {
-  fetch("/data")
+  // fetch the data from endpoint to display
+  filterComments()
   .then(res => res.json())
   .then((comments) => {
     console.log("Retrieved comments from server.")
@@ -43,5 +64,3 @@ function getComments() {
 }
 
 getComments();
-
-
