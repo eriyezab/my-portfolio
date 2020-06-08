@@ -1,4 +1,4 @@
-const COMMENTSLIST = document.getElementById('comments-list');
+const COMMENTS_LIST_DOC_ELEMENT = document.getElementById('comments-list');
 
 function timestampToDate(timestamp) {
   const date = new Date(timestamp);
@@ -22,15 +22,15 @@ function getComments() {
       let listNode = document.createElement("LI");
       let textNode = document.createTextNode(comments[i].name + ' at ' + timestampToDate(comments[i].timestamp) + ': ' + comments[i].message);
       listNode.appendChild(textNode);
-      COMMENTSLIST.appendChild(listNode);
+      COMMENTS_LIST_DOC_ELEMENT.appendChild(listNode);
     }
   });
 }
 
 function removeCommentsFromPage() {
   let comments;
-  while((comments = COMMENTSLIST.getElementsByTagName("li")).length > 0) {
-    COMMENTSLIST.removeChild(comments[0]);
+  while((comments = COMMENTS_LIST_DOC_ELEMENT.getElementsByTagName("li")).length > 0) {
+    COMMENTS_LIST_DOC_ELEMENT.removeChild(comments[0]);
   }
 }
 
@@ -39,7 +39,6 @@ function deleteAllComments() {
   if(deleteComments) {
     fetch("/delete-comments", {method: "POST"});
     removeCommentsFromPage()
-    //TODO: Remove later
     console.log("Comments deleted.");
   }
 }
