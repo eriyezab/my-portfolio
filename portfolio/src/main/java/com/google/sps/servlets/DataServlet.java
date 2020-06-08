@@ -113,13 +113,13 @@ public class DataServlet extends HttpServlet {
     String sortBy;
     if(sortValue.equals("name")) {
       sortBy = "name";
-    }else {
+    } else {
       sortBy = "timestamp";
     }
 
     if(sortOrder.equals("ascending")) {
       return new Query("Comment").addSort(sortBy, SortDirection.ASCENDING);
-    }else {
+    } else {
       return new Query("Comment").addSort(sortBy, SortDirection.DESCENDING);
     }
   }
