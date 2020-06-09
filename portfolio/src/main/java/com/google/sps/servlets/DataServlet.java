@@ -21,6 +21,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -33,6 +35,7 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
+  private static final UserService USER = UserServiceFactory.getUserService();
   private static final Gson GSON = new Gson();
 
   @Override
@@ -50,10 +53,11 @@ public class DataServlet extends HttpServlet {
       }
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
+      String email = (String) entity.getProperty("email");
       String message = (String) entity.getProperty("message");
       long timestamp = (long) entity.getProperty("timestamp");
 
-      Comment comment = new Comment(id, name, message, timestamp);
+      Comment comment = new Comment(id, name, email, message, timestamp);
       comments.add(comment);
     }
 
@@ -67,6 +71,15 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Check if the user is logged in and if not redirect them. If so get the email
+    String email;
+    if(USER.isUserLoggedIn()) {
+      email = USER.getCurrentUser().getEmail();
+    } else {
+      response.sendRedirect("/comments.html");
+      return;
+    } 
+
     // Get input from the form.
     String name = getParameter(request, "name", "Anonymous");
     String message = getParameter(request, "message", null);
@@ -81,7 +94,7 @@ public class DataServlet extends HttpServlet {
     }
     
     // Create comment entity
-    Entity commentEntity = createCommentEntity(name, message, timestamp);
+    Entity commentEntity = createCommentEntity(name, email, message, timestamp);
 
     // Add comment entity to DATASTORE
     DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
@@ -121,14 +134,16 @@ public class DataServlet extends HttpServlet {
    * Create an entity to insert into datastore
    *
    * @param name The name of the user that commented.
+   * @param email The email of the user that commented.
    * @param message The message the user left.
    * @param timestamp The time the user made the comment.
    * @return an entity that can be put into the datastore containing
    * the comment information.
    */
-  private Entity createCommentEntity(String name, String message, long timestamp) {
+  private Entity createCommentEntity(String name, String email, String message, long timestamp) {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
+    commentEntity.setProperty("email", email);
     commentEntity.setProperty("message", message);
     commentEntity.setProperty("timestamp", timestamp);
     return commentEntity;
