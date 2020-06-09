@@ -1,5 +1,8 @@
 const FILTERS = document.getElementById("filters");
 const COMMENTS_LIST_DOC_ELEMENT = document.getElementById('comments-list');
+const USER_DIV = document.getElementById("users");
+const LOG_IN = "Click here to log in: ";
+const LOG_OUT = "Click here to log out: ";
 
 function timestampToDate(timestamp) {
   const date = new Date(timestamp);
@@ -78,4 +81,19 @@ function deleteAllComments() {
   }
 }
 
+function getUserStatus() {
+  fetch("/user")
+  .then(res => res.json())
+  .then((userStatus) => {
+    if(userStatus.status){
+      const commentForm = document.querySelector("form");
+      commentForm.removeAttribute("hidden");
+      USER_DIV.firstElementChild.innerHTML = LOG_OUT + "<a href='" + userStatus.url + "'>Log Out</a>";
+    } else {
+      USER_DIV.firstElementChild.innerHTML = LOG_IN + "<a href='" + userStatus.url + "'>Log In</a>";
+    }
+  });
+}
+
 getComments();
+getUserStatus();
