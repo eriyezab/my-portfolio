@@ -22,18 +22,18 @@ package com.google.sps.data;
 public class UserStatus {
 
   /** The logged in status of the user */
-  private boolean status;
+  private boolean loggedIn;
 
   /** The url that the user clicks to log in or log out depending on status. */
   private String url;
 
-  public UserStatus(boolean status, String url) {
-    this.status = status;
+  public UserStatus(boolean loggedIn, String url) {
+    this.loggedIn = loggedIn;
     this.url = url;
   }
   
-  public boolean getStatus() {
-    return this.status;
+  public boolean getLoggedIn() {
+    return this.loggedIn;
   }
 
   public String getUrl() {

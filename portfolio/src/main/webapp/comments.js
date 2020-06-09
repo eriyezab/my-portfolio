@@ -92,7 +92,7 @@ function getUserStatus() {
   fetch("/user")
   .then(res => res.json())
   .then((userStatus) => {
-    if(userStatus.status){
+    if(userStatus.loggedIn){
       const commentForm = document.querySelector("form");
       commentForm.removeAttribute("hidden");
       USER_DIV.firstElementChild.innerHTML = LOG_OUT + "<a href='" + userStatus.url + "'>Log Out</a>";
