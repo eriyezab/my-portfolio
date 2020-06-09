@@ -23,6 +23,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.QueryResultList;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -44,13 +46,12 @@ public class DataServlet extends HttpServlet {
     int maxComments = getNumComments(request);
 
     Query query = makeQueryFromParams(request);
-    PreparedQuery results = DATASTORE.prepare(query);
+    PreparedQuery preparedQuery = DATASTORE.prepare(query);
+    FetchOptions fetchOptions = FetchOptions.Builder.withLimit(maxComments);
+    QueryResultList<Entity> results = preparedQuery.asQueryResultList(fetchOptions);
 
     ArrayList<Comment> comments = new ArrayList<>();
-    for(Entity entity: results.asIterable()) {
-      if(comments.size() == maxComments) {
-        break;
-      }
+    for(Entity entity: results) {
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
       String email = (String) entity.getProperty("email");
