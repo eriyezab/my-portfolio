@@ -118,6 +118,8 @@ public class DataServlet extends HttpServlet {
     String sortBy;
     if(sortValue.equals("name")) {
       sortBy = "name";
+    } else if(sortValue.equals("email")) {
+      sortBy = "email";
     } else {
       sortBy = "timestamp";
     }
