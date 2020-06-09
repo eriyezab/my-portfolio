@@ -51,8 +51,15 @@ function getComments() {
     console.log(comments);
     for(i = 0; i < comments.length; ++i) {
       let listNode = document.createElement("LI");
+      let displayName;
+      if(comments[i].name) {
+        displayName = comments[i].name;
+      } else {
+        displayName = comments[i].email;
+      }
+
       let textNode = 
-          document.createTextNode(comments[i].name + 
+          document.createTextNode(displayName + 
                                   ' at ' + 
                                   timestampToDate(comments[i].timestamp) + 
                                   ': ' + 

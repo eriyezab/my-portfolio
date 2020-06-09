@@ -81,7 +81,7 @@ public class DataServlet extends HttpServlet {
     } 
 
     // Get input from the form.
-    String name = getParameter(request, "name", "Anonymous");
+    String name = getParameter(request, "name", null); 
     String message = getParameter(request, "message", null);
     long timestamp = System.currentTimeMillis();
 
