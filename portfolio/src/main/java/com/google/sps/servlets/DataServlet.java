@@ -86,8 +86,6 @@ public class DataServlet extends HttpServlet {
     }
 
     float score = getSentimentScore(message);
-    // TODO: Remove later
-    // System.out.printf("'%s' was given a score of: %d\n", message, score);
     
     // Create comment entity
     Entity commentEntity = createCommentEntity(name, message, score, timestamp);
