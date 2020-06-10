@@ -30,7 +30,7 @@ public class Comment {
   /** The message that the user commented. */
   private String message;
 
-  /** The sentimental score of the message. */
+  /** The sentiment score of the message. */
   private float score;
 
   /** The time the user made the comment. */
