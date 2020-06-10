@@ -23,6 +23,9 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.QueryResultList;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -52,9 +55,10 @@ public class DataServlet extends HttpServlet {
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
       String message = (String) entity.getProperty("message");
+      float score = ((Double) entity.getProperty("score")).floatValue();
       long timestamp = (long) entity.getProperty("timestamp");
 
-      Comment comment = new Comment(id, name, message, timestamp);
+      Comment comment = new Comment(id, name, message, score, timestamp);
       comments.add(comment);
     }
 
@@ -80,9 +84,13 @@ public class DataServlet extends HttpServlet {
       response.sendRedirect(url);
       return;
     }
+
+    float score = getSentimentScore(message);
+    // TODO: Remove later
+    // System.out.printf("'%s' was given a score of: %d\n", message, score);
     
     // Create comment entity
-    Entity commentEntity = createCommentEntity(name, message, timestamp);
+    Entity commentEntity = createCommentEntity(name, message, score, timestamp);
 
     // Add comment entity to DATASTORE
     DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
@@ -123,16 +131,34 @@ public class DataServlet extends HttpServlet {
    *
    * @param name The name of the user that commented.
    * @param message The message the user left.
+   * @param score The sentiment score of the message.
    * @param timestamp The time the user made the comment.
    * @return an entity that can be put into the datastore containing
    * the comment information.
    */
-  private Entity createCommentEntity(String name, String message, long timestamp) {
+  private Entity createCommentEntity(String name, String message, float score, long timestamp) {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("message", message);
+    commentEntity.setProperty("score", score);
     commentEntity.setProperty("timestamp", timestamp);
     return commentEntity;
+  }
+
+  /**
+   * Generate and return the sentiment score of the given message.
+   *
+   * @param message The comment the user made that will be analyzed.
+   * @return The sentiment score that was given to the comment.
+   */
+  private float getSentimentScore(String message) throws IOException {
+    Document doc =
+              Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+    return score;
   }
 
   /**

@@ -53,7 +53,10 @@ function getComments() {
                                   ' at ' + 
                                   timestampToDate(comments[i].timestamp) + 
                                   ': ' + 
-                                  comments[i].message);
+                                  comments[i].message + 
+                                  ' (' +
+                                  comments[i].score + 
+                                  ')');
       listNode.appendChild(textNode);
       COMMENTS_LIST_DOC_ELEMENT.appendChild(listNode);
     }
