@@ -38,7 +38,7 @@ function deleteAllComments() {
   deleteComments = confirm("Are you sure you want to delete all comments? This action is irreversible!");
   if(deleteComments) {
     fetch("/delete-comments", {method: "POST"});
-    removeCommentsFromPage()
+    removeCommentsFromPage();
     console.log("Comments deleted.");
   }
 }
