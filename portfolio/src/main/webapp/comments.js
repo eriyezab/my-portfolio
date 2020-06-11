@@ -1,8 +1,8 @@
 const FILTERS = document.getElementById("filters");
 const COMMENTS_LIST_DOC_ELEMENT = document.getElementById('comments-list');
 const USER_DIV = document.getElementById("users");
-const LOG_IN = "Click here to log in: ";
-const LOG_OUT = "Click here to log out: ";
+const LOG_IN_PROMPT = "Click here to log in: ";
+const LOG_OUT_PROMPT = "Click here to log out: ";
 
 function timestampToDate(timestamp) {
   const date = new Date(timestamp);
@@ -51,13 +51,7 @@ function getComments() {
     console.log(comments);
     for(i = 0; i < comments.length; ++i) {
       let listNode = document.createElement("LI");
-      let displayName;
-      if(comments[i].name) {
-        displayName = comments[i].name;
-      } else {
-        displayName = comments[i].email;
-      }
-
+      let displayName = (comments[i].name ? comments[i].name : comments[i].email);
       let textNode = 
           document.createTextNode(displayName + 
                                   ' at ' + 
@@ -95,9 +89,9 @@ function getUserStatus() {
     if(userStatus.loggedIn){
       const commentForm = document.querySelector("form");
       commentForm.removeAttribute("hidden");
-      USER_DIV.firstElementChild.innerHTML = LOG_OUT + "<a href='" + userStatus.url + "'>Log Out</a>";
+      USER_DIV.firstElementChild.innerHTML = LOG_OUT_PROMPT + "<a href='" + userStatus.url + "'>Log Out</a>";
     } else {
-      USER_DIV.firstElementChild.innerHTML = LOG_IN + "<a href='" + userStatus.url + "'>Log In</a>";
+      USER_DIV.firstElementChild.innerHTML = LOG_IN_PROMPT + "<a href='" + userStatus.url + "'>Log In</a>";
     }
   });
 }
