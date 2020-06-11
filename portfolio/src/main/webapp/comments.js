@@ -17,7 +17,9 @@ function checkCommentPosted() {
   const url = new URL(window.location.href);
   const posted = url.searchParams.get("comment-posted");
   if(posted === "false") {
-    window.alert("Comment not posted!");
+    const reason = url.searchParams.get("reason");
+    const message = (reason === "score") ? "Your sentiment score was too low!" : "Your message was empty!";  
+    window.alert(message);
     console.log("The comment was not posted.");
   }
 }
@@ -55,7 +57,7 @@ function getComments() {
                                   ': ' + 
                                   comments[i].message + 
                                   ' (' +
-                                  comments[i].score + 
+                                  comments[i].sentimentScore + 
                                   ')');
       listNode.appendChild(textNode);
       COMMENTS_LIST_DOC_ELEMENT.appendChild(listNode);

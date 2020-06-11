@@ -76,16 +76,23 @@ public class DataServlet extends HttpServlet {
     String name = getParameter(request, "name", "Anonymous");
     String message = getParameter(request, "message", null);
     long timestamp = System.currentTimeMillis();
+    String queryString = "comment-posted=false";
 
     // If the message was empty then do not add to datastore 
     if(message == null) {
-      String queryString = "comment-posted=false";
+      queryString += "&reason=empty";
       String url = createRedirectURL(request, queryString);
       response.sendRedirect(url);
       return;
     }
 
     float score = getSentimentScore(message);
+    if(score <= -0.3) {
+      queryString += "&reason=score";
+      String url = createRedirectURL(request, queryString);
+      response.sendRedirect(url);
+      return;
+    }
     
     // Create comment entity
     Entity commentEntity = createCommentEntity(name, message, score, timestamp);
@@ -149,14 +156,20 @@ public class DataServlet extends HttpServlet {
    * @param message The comment the user made that will be analyzed.
    * @return The sentiment score that was given to the comment.
    */
-  private float getSentimentScore(String message) throws IOException {
-    Document doc =
-              Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
-    LanguageServiceClient languageService = LanguageServiceClient.create();
-    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
-    float score = sentiment.getScore();
-    languageService.close();
-    return score;
+  private float getSentimentScore(String message) {
+    try {
+      Document doc =
+                Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+      LanguageServiceClient languageService = LanguageServiceClient.create();
+      Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+      float score = sentiment.getScore();
+      languageService.close();
+      return score;
+    } catch (IOException e) {
+      System.out.println("This error ocurred getting the sentiment score:");
+      System.out.println(e);
+      return -1;
+    }
   }
 
   /**
