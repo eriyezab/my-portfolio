@@ -31,7 +31,7 @@ public class Comment {
   private String message;
 
   /** The sentiment score of the message. */
-  private float score;
+  private float sentimentScore;
 
   /** The time the user made the comment. */
   private long timestamp;
@@ -40,12 +40,11 @@ public class Comment {
     this.id = id;
     this.name = name;
     this.message = message;
-    this.score = score;
+    this.sentimentScore = score;
     this.timestamp = timestamp;
   }
   
-  // TODO: Add getters for private attributes
-  public float getScore() {
-    return this.score;
+  public float getSentimentScore() {
+    return this.sentimentScore;
   }
 }
