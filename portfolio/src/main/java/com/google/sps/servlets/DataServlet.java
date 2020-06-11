@@ -42,7 +42,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get filter parameters
+    // Get filter parameters.
     int maxComments = getNumComments(request);
 
     Query query = makeQueryFromParams(request);
@@ -62,17 +62,17 @@ public class DataServlet extends HttpServlet {
       comments.add(comment);
     }
 
-    // Convert comments list to JSON
+    // Convert comments list to JSON.
     String json = GSON.toJson(comments);
 
-    // Send json to server
+    // Send json to server.
     response.setContentType("applications/json;");
     response.getWriter().println(json);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Check if the user is logged in and if not redirect them. If so get the email
+    // Check if the user is logged in and if not redirect them. If so get the email.
     String email;
     if(USER.isUserLoggedIn()) {
       email = USER.getCurrentUser().getEmail();
@@ -86,7 +86,7 @@ public class DataServlet extends HttpServlet {
     String message = getParameter(request, "message", null);
     long timestamp = System.currentTimeMillis();
 
-    // If the message was empty then do not add to datastore 
+    // If the message was empty then do not add to datastore.
     if(message == null) {
       String queryString = "comment-posted=false";
       String url = createRedirectURL(request, queryString);
@@ -94,10 +94,10 @@ public class DataServlet extends HttpServlet {
       return;
     }
     
-    // Create comment entity
+    // Create comment entity.
     Entity commentEntity = createCommentEntity(name, email, message, timestamp);
 
-    // Add comment entity to DATASTORE
+    // Add comment entity to DATASTORE.
     DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
     DATASTORE.put(commentEntity);
 
@@ -155,9 +155,9 @@ public class DataServlet extends HttpServlet {
   /**
    * Retrieve the value of the parameter from the HTTP request.
    *
-   * @param request The HTTP request object
-   * @param name The name of the parameter being retrieved from the request
-   * @param defaultValue The value to be returned if the request parameter is null or empty
+   * @param request The HTTP request object.
+   * @param name The name of the parameter being retrieved from the request.
+   * @param defaultValue The value to be returned if the request parameter is null or empty.
    * @return the request parameter, or the default value if the parameter
    * was not specified by the client as a string or null.
    */
@@ -175,9 +175,9 @@ public class DataServlet extends HttpServlet {
   /**
    * Create a redirect url from the request given the request and a query string to be appended.
    *
-   * @param request The HTTP request object
-   * @param queryString The parameters to be added to the url as a string
-   * @return the constructed url as a string
+   * @param request The HTTP request object.
+   * @param queryString The parameters to be added to the url as a string.
+   * @return the constructed url as a string.
    */
   private String createRedirectURL(HttpServletRequest request,  String queryString) {
     String fullQueryString;
@@ -192,16 +192,16 @@ public class DataServlet extends HttpServlet {
   }
 
   /**
-   * Get the max number of comments to be displayed from the request parameter
+   * Get the max number of comments to be displayed from the request parameter.
    *
-   * @param request The HTTP request object
+   * @param request The HTTP request object.
    * @return the number of comments in the request paramter, or 5 if the 
-   *         parameterwas not specified by the client
+   * parameter was not specified by the client.
    */
   private int getNumComments(HttpServletRequest request) {
     String numCommentsString = request.getParameter("num-comments");
 
-    // Convert parameter to int
+    // Convert parameter to int.
     int numComments;
     try {
       numComments = Integer.parseInt(numCommentsString);
@@ -210,7 +210,7 @@ public class DataServlet extends HttpServlet {
       return 5;
     }
 
-    // Check that the integer is greater than or equal to 0
+    // Check that the integer is greater than or equal to 0.
     if (numComments < 0 ) {
       System.err.println("Number of comments is too low: " + numCommentsString);
       return 1;
