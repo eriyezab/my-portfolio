@@ -60,7 +60,7 @@ public class Comment {
     return this.email;
   }
 
-  public long timestamp() {
+  public long getTimestamp() {
     return this.timestamp;
   }
 
