@@ -2,61 +2,55 @@ html {
     scroll-behavior: smooth;
 }
 
-.showcase {
-  background: rgba(0, 0, 0, 1);
-}
-
-.showcase::after {
-  content: '';
-  height: 100vh;
+header {
+  background:#2A1338;
+  min-height: 100vh;
   width: 100%;
-  background-image: url(images/basketball_background.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: block;
-  transition: all 1000ms;
 }
 
-
-.showcase:hover::after {
-  filter: blur(10px);
-  -webkit-filter: blur(10px);
-  transition: all 1000ms;
-}
-
-
-.showcase:hover > .showcase-content {
-  filter: blur(0px);
-  -webkit-filter: blur(0px);
-  transition: all 500ms;
-}
-
-.showcase-content {
+#landing-page-content {
   position: absolute;
   z-index: 1;
-  top: 20%;
+  margin: auto;
+  top: 30%;
   left: 50%;
-  margin-top: 105px;
-  margin-left: -145px;
-  width: 300px;
-  height: 350px;
+  -webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+	top: calc(50% - 130px);
+  width: 100%;
   text-align: center;
-  transition: all 1000ms;
   color: white;
-  filter: blur(2px);
-  -webkit-filter: blur(2px);
 }
 
-#social-media-links {
+#particles-js {
+  height: 100vh;
+}
+
+#links {
   margin-top 50px;
 }
 
-#social-media-links a:link, #social-media-links a:visited {
+#links a:link, #links a:visited {
   color: white;
 }
 
-#social-media-links a:hover {
+#links a:hover {
   color: grey;
 }
 
+@keyframes fa-blink {
+  0% { opacity: 1; }
+  20% { opacity: 0.8; }
+  40% { opacity: 0.6; }
+  60% { opacity: 0.6; }
+  80% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+.fa-blink {
+  -webkit-animation: fa-blink 2s linear infinite;
+  -moz-animation: fa-blink 2s linear infinite;
+  -ms-animation: fa-blink 2s linear infinite;
+  -o-animation: fa-blink 2s linear infinite;
+  animation: fa-blink 2s linear infinite;
+}
