@@ -2,10 +2,22 @@ html {
     scroll-behavior: smooth;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 header {
   background:#2A1338;
   min-height: 100vh;
   width: 100%;
+}
+
+a {
+  color: #562773;
+}
+
+a:hover {
+  color: #7870A1;
 }
 
 #landing-page-content {
@@ -53,4 +65,15 @@ header {
   -ms-animation: fa-blink 2s linear infinite;
   -o-animation: fa-blink 2s linear infinite;
   animation: fa-blink 2s linear infinite;
+}
+
+#navigation {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+  
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #562773;
 }
