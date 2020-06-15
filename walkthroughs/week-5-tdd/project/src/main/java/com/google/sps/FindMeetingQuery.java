@@ -22,9 +22,11 @@ import java.util.Set;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    // throw new UnsupportedOperationException("TODO: Implement this method.");
+    // Create arrays to hold all the times attendees have meetings and the free times of all attendees
     ArrayList<TimeRange> freeTimes = new ArrayList<TimeRange>();
     ArrayList<TimeRange> allTimes = new ArrayList<TimeRange>();
+
+    // Add each event's time range to allTimes list if one of the attendees in the request is in that event
     for(Event event: events) {
       Set<String> eventAttendees = new HashSet<String>(event.getAttendees());
       Set<String> requestAttendees = new HashSet<String>(request.getAttendees());
@@ -35,6 +37,8 @@ public final class FindMeetingQuery {
 
     Collections.sort(allTimes, TimeRange.ORDER_BY_START);
 
+    // If there are no times when attendees have meetings, check if the duration is less than 24 hrs and
+    // if so then return a time range encompassing the entire day
     if(allTimes.size() == 0) {
       TimeRange wholeDay = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true);
       if(wholeDay.duration() >= request.getDuration()) {
@@ -43,6 +47,7 @@ public final class FindMeetingQuery {
       return freeTimes;
     }
 
+    // Need to filter the allTimes list so that all overlaps are removed and the list is modified accordingly
     int i = 0;
     while(i < allTimes.size() - 1) {
       if(allTimes.get(i).overlaps(allTimes.get(i+1))) {
@@ -57,6 +62,8 @@ public final class FindMeetingQuery {
 
     int sizeAllTimesList = allTimes.size();
 
+    // Add each opening from the allTimes list to freeTimes list if the opening's duration is greater than or 
+    // equal to the meeting request's duration
     if(sizeAllTimesList > 0) {
       if(!(allTimes.get(0).contains(TimeRange.START_OF_DAY))) {
         TimeRange first = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, allTimes.get(0).start(), false);
