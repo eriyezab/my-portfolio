@@ -166,8 +166,7 @@ public class DataServlet extends HttpServlet {
       languageService.close();
       return score;
     } catch (IOException e) {
-      System.out.println("This error ocurred getting the sentiment score:");
-      System.out.println(e);
+      System.out.println("This error ocurred getting the sentiment score:" + e);
       return -1;
     }
   }
