@@ -24,22 +24,22 @@ public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     // Create arrays to hold all the times attendees have meetings and the free times of all attendees
     ArrayList<TimeRange> freeTimes = new ArrayList<TimeRange>();
-    ArrayList<TimeRange> allTimes = new ArrayList<TimeRange>();
+    ArrayList<TimeRange> busyTimes = new ArrayList<TimeRange>();
 
-    // Add each event's time range to allTimes list if one of the attendees in the request is in that event
+    // Add each event's time range to busyTimes list if one of the attendees in the request is in that event
     for (Event event: events) {
       Set<String> eventAttendees = new HashSet<String>(event.getAttendees());
       Set<String> requestAttendees = new HashSet<String>(request.getAttendees());
       if (eventAttendees.removeAll(requestAttendees)) {
-        allTimes.add(event.getWhen());
+        busyTimes.add(event.getWhen());
       }
     }
 
-    Collections.sort(allTimes, TimeRange.ORDER_BY_START);
+    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
 
     // If there are no times when attendees have meetings, check if the duration is less than 24 hrs and
     // if so then return a time range encompassing the entire day
-    if (allTimes.size() == 0) {
+    if (busyTimes.size() == 0) {
       TimeRange wholeDay = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, true);
       if (wholeDay.duration() >= request.getDuration()) {
         freeTimes.add(wholeDay);
@@ -47,42 +47,42 @@ public final class FindMeetingQuery {
       return freeTimes;
     }
 
-    // Need to filter the allTimes list so that all overlaps are removed and the list is modified accordingly
+    // Need to filter the busyTimes list so that all overlaps are removed and the list is modified accordingly
     int i = 0;
-    while (i < allTimes.size() - 1) {
-      if (allTimes.get(i).overlaps(allTimes.get(i+1))) {
-        if (!(allTimes.get(i).contains(allTimes.get(i+1)))) {
-          allTimes.set(i, TimeRange.fromStartEnd(allTimes.get(i).start(), allTimes.get(i+1).end(), false));
+    while (i < busyTimes.size() - 1) {
+      if (busyTimes.get(i).overlaps(busyTimes.get(i+1))) {
+        if (!(busyTimes.get(i).contains(busyTimes.get(i+1)))) {
+          busyTimes.set(i, TimeRange.fromStartEnd(busyTimes.get(i).start(), busyTimes.get(i+1).end(), false));
         }
-        allTimes.remove(i+1);
+        busyTimes.remove(i+1);
       } else {
         ++i;
       }
     }
 
-    int sizeAllTimesList = allTimes.size();
+    int sizeBusyTimesList = busyTimes.size();
 
-    // Add each opening from the allTimes list to freeTimes list if the opening's duration is greater than or 
+    // Add each opening from the busyTimes list to freeTimes list if the opening's duration is greater than or 
     // equal to the meeting request's duration
-    if (sizeAllTimesList > 0) {
-      if (!(allTimes.get(0).contains(TimeRange.START_OF_DAY))) {
-        TimeRange first = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, allTimes.get(0).start(), false);
+    if (sizeBusyTimesList > 0) {
+      if (!(busyTimes.get(0).contains(TimeRange.START_OF_DAY))) {
+        TimeRange first = TimeRange.fromStartEnd(TimeRange.START_OF_DAY, busyTimes.get(0).start(), false);
         if (first.duration() >= request.getDuration()) {
           freeTimes.add(first);
         }
       }
     }
 
-    for (i = 0; i < sizeAllTimesList - 1; ++i) {
-      TimeRange range = TimeRange.fromStartEnd(allTimes.get(i).end(), allTimes.get(i+1).start(), false);
+    for (i = 0; i < sizeBusyTimesList - 1; ++i) {
+      TimeRange range = TimeRange.fromStartEnd(busyTimes.get(i).end(), busyTimes.get(i+1).start(), false);
       if (range.duration() >= request.getDuration()) {
         freeTimes.add(range);
       }
     }
 
-    if (sizeAllTimesList > 0) {
-      if (!(allTimes.get(sizeAllTimesList - 1).contains(TimeRange.END_OF_DAY))) {
-        TimeRange last = TimeRange.fromStartEnd(allTimes.get(sizeAllTimesList - 1).end(), TimeRange.END_OF_DAY, true);
+    if (sizeBusyTimesList > 0) {
+      if (!(busyTimes.get(sizeBusyTimesList - 1).contains(TimeRange.END_OF_DAY))) {
+        TimeRange last = TimeRange.fromStartEnd(busyTimes.get(sizeBusyTimesList - 1).end(), TimeRange.END_OF_DAY, true);
         if (last.duration() >= request.getDuration()) {
           freeTimes.add(last);
         }
