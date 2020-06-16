@@ -63,6 +63,4 @@ public class Comment {
   public long getTimestamp() {
     return this.timestamp;
   }
-
-
 }
