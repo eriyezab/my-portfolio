@@ -28,12 +28,12 @@
     <div id="content" class="container-fluid padding">
       <!-- Showcase Navigation -->
       <div id="navigation">
-        <ul class="nav nav-pills nav-justified purple">
-          <li class="nav-item"><a class="nav-link" href="#landing-page">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" data-toggle="pill" href="#aboutme">About Me</a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#experience">Experience</a></li>
-          <li class="nav-item"><a class="nav-link disabled" href="#">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" data-toggle="pill" href="#comments">Comments</a></li>
+        <ul class="nav nav-pills nav-justified flex-column flex-sm-row">
+          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link" href="#landing-page">Home</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link active" data-toggle="pill" href="#aboutme">About Me</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link" data-toggle="pill" href="#experience">Experience</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link disabled" href="#">Blog</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link" data-toggle="pill" href="#comments">Comments</a></li>
         </ul>
       </div>
       <!-- About Me --> 
@@ -49,7 +49,7 @@
                 <div align="center">
                   <p class="card-text"><small class="text-muted">Click for a random fact about me:</small></p>
                   <div id="fact-container" class="blockquote font-italic font-weight-light"></div>
-                  <button class="btn btn-lg btn-primary" onclick="addRandomFact()">Random Fact!</button>
+                  <button class="btn btn-lg btn-dark purple" onclick="addRandomFact()">Random Fact!</button>
                 </div>
               </div>
             </div>
@@ -58,7 +58,7 @@
             </div>
           </div>
           <!-- Interests Section -->
-          <div class="col-12 my-5">
+          <div id="interests" class="col-12 my-5">
             <h3 class="text-center display-3">Interests</h3>
             <div class="card">
               <div class="card-header"> 
@@ -126,77 +126,101 @@
         </div>
         <!-- Experience Section -->
         <div class="tab-pane container" id="experience">
-          <h2 class="display-3 text-center">Experience</h2>
-          <div class="card">
-            <div class="card-header"> 
-              <ul class="nav nav-tabs card-header-tabs"  id="experience-tabs" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link active" id="work-tab" data-toggle="tab" href="#work" role="tab" aria-controls="work" aria-selected="true">Work</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="projects-tab" data-toggle="tab" href="#projects" role="tab" aria-controls="projects" aria-selected="false">Projects</a>
-                </li>
-              </ul>
+          <div class="" id="work">
+          <h3 class="display-4 text-center">Work</h3>
+            <div id="fivetran">
+              <h4>Fivetran - Product Analyst</h4>
+              <p>I was a Product Analyst Intern at Fivetran from the beginning of June until the end of July in 2019. One of the
+              projects I did there was to create a dashboard that illustrated new user retention across trial steps in a given month. This 
+              gave product designers insight as to where potential clients were having trouble with the trial and steps that may need
+              improving.
             </div>
-
-            <div class="card-body">
-              <div class="tab-content" id="experience-content">
-                <div class="tab-pane fade show active" id="work" role="tabpanel" aria-labelledby="work-tab">
-                  <div id="fivetran">
-                    <h4>Fivetran</h4>
-                    <p>I was a Product Analyst Intern at Fivetran from the beginning of June until the end of July in 2019. One of the
-                    projects I did there was to create a dashboard that illustrated new user retention across trial steps in a given month. This 
-                    gave product designers insight as to where potential clients were having trouble with the trial and steps that may need
-                    improving.
-                  </div>
-                </div>
-                <div class="tab-pane fade" id="projects" role="tabpanel" aria-labelledby="projects-tab">
-                  <h3 class="display-4 text-center">Projects</h3>
-                  <div class="container-fluid">
-                    <div class="row justify-content center">
-                      <div class="col-auto mb-3">
-                        <div class="card-deck padding">
-                          <div class="card" id="mangatracker">
-                            <div class="card-body">
-                              <h4 class="card-title">Manga Tracker</h4>
-                              <p class="card-text">As mentioned earlier in my interests, I enjoy reading manga and I used to read them from websites online.
-                              I found that checking the website to see if there was a new chapter for all of the manga that I was reading
-                              was very tedious and was often a waste of time if there were no new chapters. Their sites were usually filled
-                              with lots of ads and popups which made visiting them very unpleasant. There was also pressure to read the 
-                              chapters as soon as they were released in order to avoid getting spoiled from other sources such as social media 
-                              or friends. I decided to make a web scraper using python that would find out if there was a new release for the 
-                              manga that I read and would send an email with the chapters as attachments. I had set this script to run every hour 
-                              so I now get chapters almost as soon as they are released and the emails contain just the pages with no ads so
-                              it makes for a pleasurable reading experience.</p>
-                              <a href="https://github.com/eriyezab/manga_fetcher" target="_blank" class="btn btn-outline-secondary">Code Repo</a>
-                            </div>
-                            <img class="card-img-bottom img-thumbnail" src="images/killua_drip.jpg" alt="Killua">
-                          </div>
-                          <div class="card" id="personal-portfolio">
-                            <div class="card-body">
-                              <h4 class="card-title">Portfolio</h4>
-                              <p class="card-text">During my STEP Internship at Google, our first introductory project was this personal portfolio
-                              that you are currently looking at! Due to the coronavirus, the internship was changed to a virtual internship and
-                              with that brought changes to the original structure of the internship. This portfolio is still in progress and
-                              is being built with HTML, CSS/Bootstrap, Javascript, and Java.</p>
-                              <a href="https://github.com/eriyezab/my-portfolio" target="_blank" class="btn btn-outline-secondary">Code Repo</a>
-                            </div>
-                            <img class="card-img-bottom img-thumbnail" src="images/self_portrait.jpeg" alt="Eriyeza Buwembo">
-                          </div>
-                        </div>
-                      </div>
+            <div id="google">
+              <h4>Google - STEP Intern</h4>
+              <p>I was a Product Analyst Intern at Fivetran from the beginning of June until the end of July in 2019. One of the
+              projects I did there was to create a dashboard that illustrated new user retention across trial steps in a given month. This 
+              gave product designers insight as to where potential clients were having trouble with the trial and steps that may need
+              improving.
+            </div>
+          </div>
+          <h3 class="display-4 text-center">Projects</h3>
+          <div class="container-fluid">
+            <div class="row justify-content center">
+              <div class="col-auto mb-3">
+                <div class="card-deck padding">
+                  <div class="card" id="mangatracker">
+                    <div class="card-body">
+                      <h4 class="card-title">Manga Tracker</h4>
+                      <p class="card-text">As mentioned earlier in my interests, I enjoy reading manga and I used to read them from websites online.
+                      I found that checking the website to see if there was a new chapter for all of the manga that I was reading
+                      was very tedious and was often a waste of time if there were no new chapters. Their sites were usually filled
+                      with lots of ads and popups which made visiting them very unpleasant. There was also pressure to read the 
+                      chapters as soon as they were released in order to avoid getting spoiled from other sources such as social media 
+                      or friends. I decided to make a web scraper using python that would find out if there was a new release for the 
+                      manga that I read and would send an email with the chapters as attachments. I had set this script to run every hour 
+                      so I now get chapters almost as soon as they are released and the emails contain just the pages with no ads so
+                      it makes for a pleasurable reading experience.</p>
+                      <a href="https://github.com/eriyezab/manga_fetcher" target="_blank" class="btn btn-outline-secondary">Code Repo</a>
                     </div>
+                    <img class="card-img-bottom img-thumbnail" src="images/killua_drip.jpg" alt="Killua">
+                  </div>
+                  <div class="card" id="personal-portfolio">
+                    <div class="card-body">
+                      <h4 class="card-title">Portfolio</h4>
+                      <p class="card-text">During my STEP Internship at Google, our first introductory project was this personal portfolio
+                      that you are currently looking at! Due to the coronavirus, the internship was changed to a virtual internship and
+                      with that brought changes to the original structure of the internship. This portfolio is still in progress and
+                      is being built with HTML, CSS/Bootstrap, Javascript, and Java.</p>
+                      <a href="https://github.com/eriyezab/my-portfolio" target="_blank" class="btn btn-outline-secondary">Code Repo</a>
+                    </div>
+                    <img class="card-img-bottom img-thumbnail" src="images/self_portrait.jpeg" alt="Eriyeza Buwembo">
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- Comments Section -->
         <div class="tab-pane container" id="comments">
-          <h2 class="display-3 text-center">Comments</h2>
           <div class="scrollable border">
-            <ul class="list-unstyled">
+            <ul id="comments-list" class="list-unstyled">
             </ul>
+          </div>
+          <div id="filters" class="form-row">
+            <div class="form-group col text-center">
+              <input class="form-control" type="number" id="num-comments" name="num-comments" min="1" value="" placeholder="# of Comments">
+            </div>
+            <div class="form-group col">
+              <select class="form-control" name="sort-value" id="sort-value">
+                <option value="date">Date
+                <option value="name">Name
+                <option value="email">Email
+              </select>
+            </div>
+            <div class="form-group col">
+              <select class="form-control" name="sort-order" id="sort-order">
+                <option value="descending">Descending
+                <option value="ascending">Ascending
+              </select>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-dark mb-2 purple" onclick="getComments()">Filter</button>
+            </div>
+          </div>
+          <form action="/data" method="post" hidden>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Anonymous" value="">
+            </div>
+            <div class="form-group">
+              <label for="message">Comment:</label>
+              <textarea class="form-control" id="message" name="message" rows="4"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-dark mb-2 purple">Post Comment</button>
+          </form>
+          <div id="users">
+            <p></p>
           </div>
         </div>
       </div>
