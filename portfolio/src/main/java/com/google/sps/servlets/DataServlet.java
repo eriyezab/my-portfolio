@@ -51,7 +51,7 @@ public class DataServlet extends HttpServlet {
     QueryResultList<Entity> results = preparedQuery.asQueryResultList(fetchOptions);
 
     ArrayList<Comment> comments = new ArrayList<>();
-    for(Entity entity: results) {
+    for (Entity entity: results) {
       long id = entity.getKey().getId();
       String name = (String) entity.getProperty("name");
       String email = (String) entity.getProperty("email");
@@ -74,7 +74,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Check if the user is logged in and if not redirect them. If so get the email.
     String email;
-    if(USER.isUserLoggedIn()) {
+    if (USER.isUserLoggedIn()) {
       email = USER.getCurrentUser().getEmail();
     } else {
       response.sendRedirect("/comments.html");
@@ -87,7 +87,7 @@ public class DataServlet extends HttpServlet {
     long timestamp = System.currentTimeMillis();
 
     // If the message was empty then do not add to datastore.
-    if(message == null) {
+    if (message == null) {
       String queryString = "comment-posted=false";
       String url = createRedirectURL(request, queryString);
       response.sendRedirect(url);
@@ -117,15 +117,15 @@ public class DataServlet extends HttpServlet {
     String sortOrder = getParameter(request, "sort-order", "descending");
 
     String sortBy;
-    if(sortValue.equals("name")) {
+    if (sortValue.equals("name")) {
       sortBy = "name";
-    } else if(sortValue.equals("email")) {
+    } else if (sortValue.equals("email")) {
       sortBy = "email";
     } else {
       sortBy = "timestamp";
     }
 
-    if(sortOrder.equals("ascending")) {
+    if (sortOrder.equals("ascending")) {
       return new Query("Comment").addSort(sortBy, SortDirection.ASCENDING);
     } else {
       return new Query("Comment").addSort(sortBy, SortDirection.DESCENDING);
@@ -163,7 +163,7 @@ public class DataServlet extends HttpServlet {
    */
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-    if(value != null) {
+    if (value != null) {
       value = value.trim();
     }
     if (value == null || value.equals("")) {
@@ -181,7 +181,7 @@ public class DataServlet extends HttpServlet {
    */
   private String createRedirectURL(HttpServletRequest request,  String queryString) {
     String fullQueryString;
-    if(request.getQueryString() == null) {
+    if (request.getQueryString() == null) {
       fullQueryString = queryString;
     } else {
       fullQueryString = request.getQueryString() + "&" + queryString;
