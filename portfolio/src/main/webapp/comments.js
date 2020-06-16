@@ -29,7 +29,7 @@ function getMessageForReason(reason) {
       message = "There was an error posting your comment. Please try again!";
       break;
   }
-  reutrn message;
+  return message;
 }
 
 function checkCommentPosted() {
@@ -57,6 +57,44 @@ function filterComments() {
   return fetch(url);
 }
 
+function createComment(comment) {
+  // Create the listnode that will represent a comment.
+  const listNode = document.createElement("LI");
+  listNode.classList.add("media");
+  listNode.classList.add("mt-3");
+  listNode.classList.add("mx-3");
+
+  // add the default profile picture and style it.
+  const img = document.createElement("IMG");
+  img.src = "images/profile_picture.jpg";
+  img.height="64";
+  img.width="64";
+  img.classList.add("img-fluid");
+  img.classList.add("img-thumbnail");
+  img.classList.add("mr-3");
+  listNode.appendChild(img);
+
+  // Add the contents of the comment to the list and style using bootstrap.
+  const body = document.createElement("DIV");
+  body.classList.add("media-body");
+
+  // The heading will contain the display name of the user and what time they posted it
+  const heading = document.createElement("H5");
+  const displayName = (comment.name ? comments.name : comments.email);
+  const date = timestampToDate(comment.tinestamp);
+  heading.innerHTML = `${displayName} <small class="text-muted"> at ${date}</small>`;
+  heading.classList.add("mt-0");
+  heading.classList.add("mb-1");
+  body.appendChild(heading);
+
+  // Text will contain the message the user left
+  const text = document.createTextNode(`${comment.message} (${comment.sentimentScore})`);
+  body.appendChild(text);
+  listNode.appendChild(body);
+  
+  return listNode;
+}
+
 function getComments() {
   // Remove comments from page
   removeCommentsFromPage();
@@ -68,19 +106,8 @@ function getComments() {
     console.log("Retrieved comments from server.")
     console.log(comments);
     for (i = 0; i < comments.length; ++i) {
-      let listNode = document.createElement("LI");
-      let displayName = (comments[i].name ? comments[i].name : comments[i].email);
-      let textNode = 
-          document.createTextNode(displayName + 
-                                  ' at ' + 
-                                  timestampToDate(comments[i].timestamp) + 
-                                  ': ' + 
-                                  comments[i].message + 
-                                  ' (' +
-                                  comments[i].sentimentScore + 
-                                  ')');
-      listNode.appendChild(textNode);
-      COMMENTS_LIST_DOC_ELEMENT.appendChild(listNode);
+      const comment = createComment(comments[i]);
+      COMMENTS_LIST_DOC_ELEMENT.appendChild(comment);
     }
   });
 
