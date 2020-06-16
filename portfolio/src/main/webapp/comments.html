@@ -6,17 +6,40 @@
   </head>
   <body>
     <div id="comments">
-      <form id="comments-from" action="/data" method="POST">
+      <form action="/data" method="post" hidden>
         <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value="John Doe"><br>
+        <input type="text" id="name" name="name" value=""><br>
         <label for="comment">Comment: </label><br>
-        <textarea name="message" rows="10" cols="30"></textarea>
-        <br><br>
+        <textarea name="message" value="" rows="10" cols="30"></textarea>
+        <br>
         <input type="submit">
       </form>
+      <div id="users">
+        <p></p>
+      </div>
+      <div id="filters">
+        <label for="num-comments">Max Comments (minimum 0): </label>
+        <input type="number" id="num-comments" name="num-comments" min="1" value="10">
+        <br>
+        <label for="sort-value">Sort By:</label>
+        <select name="sort-value" id="sort-value">
+          <option value="date">Date
+          <option value="name">Name
+          <option value="email">Email
+        </select>
+        <br>
+        <label for="sort-order">Sort By:</label>
+        <select name="sort-order" id="sort-order">
+          <option value="descending">Descending
+          <option value="ascending">Ascending
+        </select>
+        <br><br>
+        <button type="button" onclick="getComments()">Filter</button>
+      </div>
       <ul id="comments-list">
       </ul>
+      <button type="button" onclick="deleteAllComments()">Delete Comments</button>
     </div>
-    <script src="comments.js">></script>
+    <script src="comments.js"></script>
   </body>
 </html>
