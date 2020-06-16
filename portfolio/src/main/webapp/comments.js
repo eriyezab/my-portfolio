@@ -1,5 +1,8 @@
 const FILTERS = document.getElementById("filters");
 const COMMENTS_LIST_DOC_ELEMENT = document.getElementById('comments-list');
+const USER_DIV = document.getElementById("users");
+const LOG_IN_PROMPT = "Click here to log in: ";
+const LOG_OUT_PROMPT = "Click here to log out: ";
 
 function timestampToDate(timestamp) {
   const date = new Date(timestamp);
@@ -13,7 +16,7 @@ function timestampToDate(timestamp) {
   return formattedTime;
 }
 
-function getMessageFromReason(reason) {
+function getMessageForReason(reason) {
   let message;
   switch (reason) {
     case "score":
@@ -34,7 +37,7 @@ function checkCommentPosted() {
   const posted = url.searchParams.get("comment-posted");
   if(posted === "false") {
     const reason = url.searchParams.get("reason");
-    const message = getMessageFromReason(reason);
+    const message = getMessageForReason(reason);
     window.alert(message);
     console.log("The comment was not posted.");
   }
@@ -64,10 +67,11 @@ function getComments() {
   .then((comments) => {
     console.log("Retrieved comments from server.")
     console.log(comments);
-    for(i = 0; i < comments.length; ++i) {
+    for (i = 0; i < comments.length; ++i) {
       let listNode = document.createElement("LI");
+      let displayName = (comments[i].name ? comments[i].name : comments[i].email);
       let textNode = 
-          document.createTextNode(comments[i].name + 
+          document.createTextNode(displayName + 
                                   ' at ' + 
                                   timestampToDate(comments[i].timestamp) + 
                                   ': ' + 
@@ -85,18 +89,33 @@ function getComments() {
 
 function removeCommentsFromPage() {
   let comments;
-  while((comments = COMMENTS_LIST_DOC_ELEMENT.getElementsByTagName("li")).length > 0) {
+  while ((comments = COMMENTS_LIST_DOC_ELEMENT.getElementsByTagName("li")).length > 0) {
     COMMENTS_LIST_DOC_ELEMENT.removeChild(comments[0]);
   }
 }
 
 function deleteAllComments() {
   deleteComments = confirm("Are you sure you want to delete all comments? This action is irreversible!");
-  if(deleteComments) {
+  if (deleteComments) {
     fetch("/delete-comments", {method: "POST"});
     removeCommentsFromPage();
     console.log("Comments deleted.");
   }
 }
 
+function getUserStatus() {
+  fetch("/user")
+  .then(res => res.json())
+  .then((userStatus) => {
+    if (userStatus.isLoggedIn){
+      const commentForm = document.querySelector("form");
+      commentForm.removeAttribute("hidden");
+      USER_DIV.firstElementChild.innerHTML = LOG_OUT_PROMPT + "<a href='" + userStatus.url + "'>Log Out</a>";
+    } else {
+      USER_DIV.firstElementChild.innerHTML = LOG_IN_PROMPT + "<a href='" + userStatus.url + "'>Log In</a>";
+    }
+  });
+}
+
 getComments();
+getUserStatus();

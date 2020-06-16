@@ -6,14 +6,17 @@
   </head>
   <body>
     <div id="comments">
-      <form action="/data" method="post">
+      <form action="/data" method="post" hidden>
         <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value="John Doe"><br>
+        <input type="text" id="name" name="name" value=""><br>
         <label for="comment">Comment: </label><br>
         <textarea name="message" value="" rows="10" cols="30"></textarea>
         <br>
         <input type="submit">
       </form>
+      <div id="users">
+        <p></p>
+      </div>
       <div id="filters">
         <label for="num-comments">Max Comments (minimum 0): </label>
         <input type="number" id="num-comments" name="num-comments" min="1" value="10">
@@ -22,6 +25,7 @@
         <select name="sort-value" id="sort-value">
           <option value="date">Date
           <option value="name">Name
+          <option value="email">Email
         </select>
         <br>
         <label for="sort-order">Sort By:</label>
