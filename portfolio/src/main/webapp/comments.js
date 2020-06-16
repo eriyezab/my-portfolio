@@ -13,11 +13,29 @@ function timestampToDate(timestamp) {
   return formattedTime;
 }
 
+function getMessageFromReason(reason) {
+  let message;
+  switch (reason) {
+    case "score":
+      message = "Your sentiment score was too low!";
+      break;
+    case "empty":
+      message = "Your message was empty!";
+      break;
+    default:
+      message = "There was an error posting your comment. Please try again!";
+      break;
+  }
+  reutrn message;
+}
+
 function checkCommentPosted() {
   const url = new URL(window.location.href);
   const posted = url.searchParams.get("comment-posted");
   if(posted === "false") {
-    window.alert("Comment not posted!");
+    const reason = url.searchParams.get("reason");
+    const message = getMessageFromReason(reason);
+    window.alert(message);
     console.log("The comment was not posted.");
   }
 }
@@ -53,7 +71,10 @@ function getComments() {
                                   ' at ' + 
                                   timestampToDate(comments[i].timestamp) + 
                                   ': ' + 
-                                  comments[i].message);
+                                  comments[i].message + 
+                                  ' (' +
+                                  comments[i].sentimentScore + 
+                                  ')');
       listNode.appendChild(textNode);
       COMMENTS_LIST_DOC_ELEMENT.appendChild(listNode);
     }
