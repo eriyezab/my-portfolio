@@ -19,7 +19,7 @@ function timestampToDate(timestamp) {
 function checkCommentPosted() {
   const url = new URL(window.location.href);
   const posted = url.searchParams.get("comment-posted");
-  if(posted === "false") {
+  if (posted === "false") {
     window.alert("Comment not posted!");
     console.log("The comment was not posted.");
   }
@@ -49,7 +49,7 @@ function getComments() {
   .then((comments) => {
     console.log("Retrieved comments from server.")
     console.log(comments);
-    for(i = 0; i < comments.length; ++i) {
+    for (i = 0; i < comments.length; ++i) {
       let listNode = document.createElement("LI");
       let displayName = (comments[i].name ? comments[i].name : comments[i].email);
       let textNode = 
@@ -68,14 +68,14 @@ function getComments() {
 
 function removeCommentsFromPage() {
   let comments;
-  while((comments = COMMENTS_LIST_DOC_ELEMENT.getElementsByTagName("li")).length > 0) {
+  while ((comments = COMMENTS_LIST_DOC_ELEMENT.getElementsByTagName("li")).length > 0) {
     COMMENTS_LIST_DOC_ELEMENT.removeChild(comments[0]);
   }
 }
 
 function deleteAllComments() {
   deleteComments = confirm("Are you sure you want to delete all comments? This action is irreversible!");
-  if(deleteComments) {
+  if (deleteComments) {
     fetch("/delete-comments", {method: "POST"});
     removeCommentsFromPage()
     console.log("Comments deleted.");
@@ -86,7 +86,7 @@ function getUserStatus() {
   fetch("/user")
   .then(res => res.json())
   .then((userStatus) => {
-    if(userStatus.isLoggedIn){
+    if (userStatus.isLoggedIn){
       const commentForm = document.querySelector("form");
       commentForm.removeAttribute("hidden");
       USER_DIV.firstElementChild.innerHTML = LOG_OUT_PROMPT + "<a href='" + userStatus.url + "'>Log Out</a>";
