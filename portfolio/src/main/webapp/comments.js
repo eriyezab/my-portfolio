@@ -16,11 +16,29 @@ function timestampToDate(timestamp) {
   return formattedTime;
 }
 
+function getMessageForReason(reason) {
+  let message;
+  switch (reason) {
+    case "score":
+      message = "Your sentiment score was too low!";
+      break;
+    case "empty":
+      message = "Your message was empty!";
+      break;
+    default:
+      message = "There was an error posting your comment. Please try again!";
+      break;
+  }
+  reutrn message;
+}
+
 function checkCommentPosted() {
   const url = new URL(window.location.href);
   const posted = url.searchParams.get("comment-posted");
-  if (posted === "false") {
-    window.alert("Comment not posted!");
+  if(posted === "false") {
+    const reason = url.searchParams.get("reason");
+    const message = getMessageForReason(reason);
+    window.alert(message);
     console.log("The comment was not posted.");
   }
 }
@@ -57,7 +75,10 @@ function getComments() {
                                   ' at ' + 
                                   timestampToDate(comments[i].timestamp) + 
                                   ': ' + 
-                                  comments[i].message);
+                                  comments[i].message + 
+                                  ' (' +
+                                  comments[i].sentimentScore + 
+                                  ')');
       listNode.appendChild(textNode);
       COMMENTS_LIST_DOC_ELEMENT.appendChild(listNode);
     }
@@ -77,7 +98,7 @@ function deleteAllComments() {
   deleteComments = confirm("Are you sure you want to delete all comments? This action is irreversible!");
   if (deleteComments) {
     fetch("/delete-comments", {method: "POST"});
-    removeCommentsFromPage()
+    removeCommentsFromPage();
     console.log("Comments deleted.");
   }
 }

@@ -25,6 +25,9 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.QueryResultList;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
@@ -56,9 +59,10 @@ public class DataServlet extends HttpServlet {
       String name = (String) entity.getProperty("name");
       String email = (String) entity.getProperty("email");
       String message = (String) entity.getProperty("message");
+      float score = ((Double) entity.getProperty("score")).floatValue();
       long timestamp = (long) entity.getProperty("timestamp");
 
-      Comment comment = new Comment(id, name, email, message, timestamp);
+      Comment comment = new Comment(id, name, email, message, score, timestamp);
       comments.add(comment);
     }
 
@@ -85,18 +89,26 @@ public class DataServlet extends HttpServlet {
     String name = getParameter(request, "name", null); 
     String message = getParameter(request, "message", null);
     long timestamp = System.currentTimeMillis();
-
-    // If the message was empty then do not add to datastore.
+    
+    // If the message was empty then do not add to datastore 
+    String queryString = "comment-posted=false";
     if (message == null) {
-      String queryString = "comment-posted=false";
+      queryString += "&reason=empty";
+      String url = createRedirectURL(request, queryString);
+      response.sendRedirect(url);
+      return;
+    }
+
+    float score = getSentimentScore(message);
+    if (score <= -0.3) {
+      queryString += "&reason=score";
       String url = createRedirectURL(request, queryString);
       response.sendRedirect(url);
       return;
     }
     
-    // Create comment entity.
-    Entity commentEntity = createCommentEntity(name, email, message, timestamp);
-
+    Entity commentEntity = createCommentEntity(name, email, message, score, timestamp);
+    
     // Add comment entity to DATASTORE.
     DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
     DATASTORE.put(commentEntity);
@@ -139,17 +151,41 @@ public class DataServlet extends HttpServlet {
    * @param name The name of the user that commented.
    * @param email The email of the user that commented.
    * @param message The message the user left.
+   * @param score The sentiment score of the message.
    * @param timestamp The time the user made the comment.
    * @return an entity that can be put into the datastore containing
    * the comment information.
    */
-  private Entity createCommentEntity(String name, String email, String message, long timestamp) {
+
+  private Entity createCommentEntity(String name, String email, String message, float score, long timestamp) {
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("name", name);
     commentEntity.setProperty("email", email);
     commentEntity.setProperty("message", message);
+    commentEntity.setProperty("score", score);
     commentEntity.setProperty("timestamp", timestamp);
     return commentEntity;
+  }
+
+  /**
+   * Generate and return the sentiment score of the given message.
+   *
+   * @param message The comment the user made that will be analyzed.
+   * @return The sentiment score that was given to the comment.
+   */
+  private float getSentimentScore(String message) {
+    try {
+      Document doc =
+                Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+      LanguageServiceClient languageService = LanguageServiceClient.create();
+      Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+      float score = sentiment.getScore();
+      languageService.close();
+      return score;
+    } catch (IOException e) {
+      System.out.println("This error ocurred getting the sentiment score:" + e);
+      return -1;
+    }
   }
 
   /**

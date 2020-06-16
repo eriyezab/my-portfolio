@@ -33,14 +33,18 @@ public class Comment {
   /** The message that the user commented. */
   private String message;
 
+  /** The sentiment score of the message. */
+  private float sentimentScore;
+
   /** The time the user made the comment. */
   private long timestamp;
   
-  public Comment(long id, String name, String email, String message, long timestamp) {
+  public Comment(long id, String name, String email, String message, float score, long timestamp) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.message = message;
+    this.sentimentScore = score;
     this.timestamp = timestamp;
   }
   
@@ -59,8 +63,13 @@ public class Comment {
   public String getMessage() {
     return this.email;
   }
-
+ 
+  public float getSentimentScore() {
+    return this.sentimentScore;
+  }
+  
   public long getTimestamp() {
     return this.timestamp;
   }
+ 
 }
