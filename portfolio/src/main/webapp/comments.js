@@ -81,7 +81,7 @@ function createComment(comment) {
   // The heading will contain the display name of the user and what time they posted it
   const heading = document.createElement("H5");
   const displayName = (comment.name ? comments.name : comments.email);
-  const date = timestampToDate(comment.tinestamp);
+  const date = timestampToDate(comment.timestamp);
   heading.innerHTML = `${displayName} <small class="text-muted"> at ${date}</small>`;
   heading.classList.add("mt-0");
   heading.classList.add("mb-1");
