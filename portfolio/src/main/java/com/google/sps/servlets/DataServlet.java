@@ -42,6 +42,7 @@ public class DataServlet extends HttpServlet {
   private static final DatastoreService DATASTORE = DatastoreServiceFactory.getDatastoreService();
   private static final UserService USER = UserServiceFactory.getUserService();
   private static final Gson GSON = new Gson();
+  private static final String COMMENTS_URL = "/?section=comments";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -81,7 +82,7 @@ public class DataServlet extends HttpServlet {
     if (USER.isUserLoggedIn()) {
       email = USER.getCurrentUser().getEmail();
     } else {
-      response.sendRedirect("/comments.html");
+      response.sendRedirect(COMMENTS_URL);
       return;
     } 
 
@@ -90,19 +91,20 @@ public class DataServlet extends HttpServlet {
     String message = getParameter(request, "message", null);
     long timestamp = System.currentTimeMillis();
     
+    String queryString = "comment-posted=";
+    String url;
     // If the message was empty then do not add to datastore 
-    String queryString = "comment-posted=false";
     if (message == null) {
-      queryString += "&reason=empty";
-      String url = createRedirectURL(request, queryString);
+      queryString += "false&reason=empty";
+      url = createRedirectURL(request, queryString);
       response.sendRedirect(url);
       return;
     }
 
     float score = getSentimentScore(message);
     if (score <= -0.3) {
-      queryString += "&reason=score";
-      String url = createRedirectURL(request, queryString);
+      queryString += "false&reason=score";
+      url = createRedirectURL(request, queryString);
       response.sendRedirect(url);
       return;
     }
@@ -114,7 +116,9 @@ public class DataServlet extends HttpServlet {
     DATASTORE.put(commentEntity);
 
     // Redirect back to the comments page.
-    response.sendRedirect("/comments.html");
+    queryString += "true";
+    url = createRedirectURL(request, queryString);
+    response.sendRedirect(url);
   }
 
   /**
@@ -174,18 +178,20 @@ public class DataServlet extends HttpServlet {
    * @return The sentiment score that was given to the comment.
    */
   private float getSentimentScore(String message) {
-    try {
-      Document doc =
-                Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
-      LanguageServiceClient languageService = LanguageServiceClient.create();
-      Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
-      float score = sentiment.getScore();
-      languageService.close();
-      return score;
-    } catch (IOException e) {
-      System.out.println("This error ocurred getting the sentiment score:" + e);
-      return -1;
-    }
+    // TODO: Uncomment this function before making pull request
+//    try {
+ //     Document doc =
+  //              Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+   //   LanguageServiceClient languageService = LanguageServiceClient.create();
+    //  Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+     // float score = sentiment.getScore();
+      //languageService.close();
+      //return score;
+    //} catch (IOException e) {
+     // System.out.println("This error ocurred getting the sentiment score:" + e);
+     // return -1;
+   // }
+    return 0.5f;
   }
 
   /**
@@ -223,7 +229,7 @@ public class DataServlet extends HttpServlet {
       fullQueryString = request.getQueryString() + "&" + queryString;
     }
 
-    String redirectURL = "/comments.html?" + fullQueryString;
+    String redirectURL = COMMENTS_URL + "&" + fullQueryString;
     return redirectURL;
   }
 

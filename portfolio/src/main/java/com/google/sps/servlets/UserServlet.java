@@ -28,11 +28,12 @@ import com.google.gson.Gson;
 public class UserServlet extends HttpServlet {
   private static final UserService USER = UserServiceFactory.getUserService();
   private static final Gson GSON = new Gson();
+  private static final String COMMENTS_URL = "/?section=comments";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("applications/json;");
-    String urlToRedirectTo = "/comments.html";
+    String urlToRedirectTo = COMMENTS_URL;
     UserStatus userStatus;
 
     if (USER.isUserLoggedIn()) {

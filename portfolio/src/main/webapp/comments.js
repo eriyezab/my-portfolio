@@ -80,7 +80,7 @@ function createComment(comment) {
 
   // The heading will contain the display name of the user and what time they posted it
   const heading = document.createElement("H5");
-  const displayName = (comment.name ? comments.name : comments.email);
+  const displayName = (comment.name ? comment.name : comment.email);
   const date = timestampToDate(comment.timestamp);
   heading.innerHTML = `${displayName} <small class="text-muted"> at ${date}</small>`;
   heading.classList.add("mt-0");
@@ -134,7 +134,7 @@ function getUserStatus() {
   fetch("/user")
   .then(res => res.json())
   .then((userStatus) => {
-    if (userStatus.isLoggedIn){
+    if (userStatus.isLoggedIn) {
       const commentForm = document.querySelector("form");
       commentForm.removeAttribute("hidden");
       USER_DIV.firstElementChild.innerHTML = LOG_OUT_PROMPT + "<a href='" + userStatus.url + "'>Log Out</a>";
@@ -144,5 +144,27 @@ function getUserStatus() {
   });
 }
 
+function navigateToCommentsSection() {
+  const url = new URL(window.location.href);
+  const section = url.searchParams.get("section");
+  if (section === "comments") {
+    // Remove the active class from the about me section of navigation.
+    document.querySelector("#navigation #aboutme-nav").classList.remove("active");
+
+    // Add the active class to the comments section of navigation.
+    document.querySelector("#navigation #comments-nav").classList.add("active");
+
+    // Remove the active class from the about me section of tab-content.
+    document.querySelector(".tab-content #aboutme").classList.remove("active");
+
+    //Add the active class to the comments section of tab-content.
+    document.querySelector(".tab-content #comments").classList.add("active");
+
+    // Scroll down to the content section.
+    document.getElementById("content").scrollIntoView();
+  }
+}
+
 getComments();
 getUserStatus();
+navigateToCommentsSection();
