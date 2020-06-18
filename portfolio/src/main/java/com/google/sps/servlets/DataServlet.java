@@ -178,20 +178,18 @@ public class DataServlet extends HttpServlet {
    * @return The sentiment score that was given to the comment.
    */
   private float getSentimentScore(String message) {
-    // TODO: Uncomment this function before making pull request
-//    try {
- //     Document doc =
-  //              Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
-   //   LanguageServiceClient languageService = LanguageServiceClient.create();
-    //  Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
-     // float score = sentiment.getScore();
-      //languageService.close();
-      //return score;
-    //} catch (IOException e) {
-     // System.out.println("This error ocurred getting the sentiment score:" + e);
-     // return -1;
-   // }
-    return 0.5f;
+    try {
+      Document doc =
+                Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+      LanguageServiceClient languageService = LanguageServiceClient.create();
+      Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+      float score = sentiment.getScore();
+      languageService.close();
+      return score;
+    } catch (IOException e) {
+      System.out.println("This error ocurred getting the sentiment score:" + e);
+      return -1f;
+    }
   }
 
   /**
