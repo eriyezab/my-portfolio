@@ -137,6 +137,8 @@ public class DataServlet extends HttpServlet {
       sortBy = "name";
     } else if (sortValue.equals("email")) {
       sortBy = "email";
+    } else if (sortValue.equals("sentimentScore")) {
+     sortBy = "score";
     } else {
       sortBy = "timestamp";
     }
