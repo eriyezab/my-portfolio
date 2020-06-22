@@ -34,7 +34,7 @@ public final class FindMeetingQueryTest {
   // Some people that we can use in our tests.
   private static final String PERSON_A = "Person A";
   private static final String PERSON_B = "Person B";
-  private static final String PErSON_C = "Person C";
+  private static final String PERSON_C = "Person C";
 
   // All dates are the first day of the year 2020.
   private static final int TIME_0800AM = TimeRange.getTimeInMinutes(8, 0);
@@ -370,7 +370,7 @@ public final class FindMeetingQueryTest {
       Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0800AM, false),
         TimeRange.fromStartEnd(TIME_0830AM, TIME_0930AM, false),
         TimeRange.fromStartDuration(TIME_1000AM, DURATION_60_MINUTES),
-        TimeRange.fromStartEnd(TIME_1130AM, TimeRange.END_OF_DAY, true),
+        TimeRange.fromStartEnd(TIME_1130AM, TimeRange.END_OF_DAY, true)  
         );
 
     Assert.assertEquals(expected, actual);
@@ -385,7 +385,8 @@ public final class FindMeetingQueryTest {
         new Event("Event 1", TimeRange.fromStartEnd(TIME_0800AM, TimeRange.END_OF_DAY, false),
             Arrays.asList(PERSON_A)),
         new Event("Event 2", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0800AM, false),
-            Arrays.asList(PERSON_B)),
+            Arrays.asList(PERSON_B)));
+
     MeetingRequest request = new MeetingRequest(NO_ATTENDEES, DURATION_1_HOUR);
 
     request.addOptionalAttendee(PERSON_A);
