@@ -29,11 +29,11 @@
       <!-- Showcase Navigation -->
       <div id="navigation">
         <ul class="nav nav-pills nav-justified flex-column flex-sm-row">
-          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link" href="#landing-page">Home</a></li>
-          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link active" data-toggle="pill" href="#aboutme">About Me</a></li>
-          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link" data-toggle="pill" href="#experience">Experience</a></li>
-          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link disabled" href="#">Blog</a></li>
-          <li class="nav-item flex-sm-fill text-sm-center"><a class="nav-link" data-toggle="pill" href="#comments">Comments</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a id="landing-page-nav" class="nav-link" href="#landing-page">Home</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a id="aboutme-nav" class="nav-link active" data-toggle="pill" href="#aboutme">About Me</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a id="experience-nav" class="nav-link" data-toggle="pill" href="#experience">Experience</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a id="blog-nav" class="nav-link disabled" href="#">Blog</a></li>
+          <li class="nav-item flex-sm-fill text-sm-center"><a id="comments-nav" class="nav-link" data-toggle="pill" href="#comments">Comments</a></li>
         </ul>
       </div>
       <!-- About Me --> 
@@ -182,6 +182,8 @@
         </div>
         <!-- Comments Section -->
         <div class="tab-pane container" id="comments">
+          <div id="comment-posted-status">
+          </div>
           <div class="scrollable border">
             <ul id="comments-list" class="list-unstyled">
             </ul>
@@ -195,6 +197,7 @@
                 <option value="date">Date
                 <option value="name">Name
                 <option value="email">Email
+                <option value="sentimentScore">Score
               </select>
             </div>
             <div class="form-group col">
