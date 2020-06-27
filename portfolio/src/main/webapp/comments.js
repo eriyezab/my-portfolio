@@ -3,6 +3,7 @@ const COMMENTS_LIST_DOC_ELEMENT = document.getElementById('comments-list');
 const USER_DIV = document.getElementById("users");
 const LOG_IN_PROMPT = "Click here to log in: ";
 const LOG_OUT_PROMPT = "Click here to log out: ";
+const COMMENT_ALERT_DIV = document.getElementById("comment-posted-status");
 
 function timestampToDate(timestamp) {
   const date = new Date(timestamp);
@@ -29,17 +30,41 @@ function getMessageForReason(reason) {
       message = "There was an error posting your comment. Please try again!";
       break;
   }
-  reutrn message;
+  return message;
+}
+
+function createAlert(type, message) {
+  const alertDiv = document.createElement("DIV");
+  alertDiv.classList.add("alert");
+  switch (type) {
+    case "success":
+      alertDiv.classList.add("alert-success");
+      break;
+    case "failure":
+      alertDiv.classList.add("alert-danger");
+      break;
+    default:
+      alertDiv.classList.add("alert-warning");
+      break;
+  }
+  const textNode = document.createTextNode(message);
+  alertDiv.appendChild(textNode);
+  return alertDiv;
 }
 
 function checkCommentPosted() {
   const url = new URL(window.location.href);
   const posted = url.searchParams.get("comment-posted");
   if(posted === "false") {
+    console.log("The comment was not posted.");
     const reason = url.searchParams.get("reason");
     const message = getMessageForReason(reason);
-    window.alert(message);
-    console.log("The comment was not posted.");
+    const failure = createAlert("failure", message);
+    COMMENT_ALERT_DIV.appendChild(failure);
+  } else if (posted === "true") {
+    console.log("The comment was posted.");
+    const success = createAlert("success", "Your comment was posted!");
+    COMMENT_ALERT_DIV.appendChild(success);
   }
 }
 
@@ -57,6 +82,44 @@ function filterComments() {
   return fetch(url);
 }
 
+function createComment(comment) {
+  // Create the listnode that will represent a comment.
+  const listNode = document.createElement("LI");
+  listNode.classList.add("media");
+  listNode.classList.add("mt-3");
+  listNode.classList.add("mx-3");
+
+  // add the default profile picture and style it.
+  const img = document.createElement("IMG");
+  img.src = "images/profile_picture.jpg";
+  img.height="64";
+  img.width="64";
+  img.classList.add("img-fluid");
+  img.classList.add("img-thumbnail");
+  img.classList.add("mr-3");
+  listNode.appendChild(img);
+
+  // Add the contents of the comment to the list and style using bootstrap.
+  const body = document.createElement("DIV");
+  body.classList.add("media-body");
+
+  // The heading will contain the display name of the user and what time they posted it
+  const heading = document.createElement("H5");
+  const displayName = (comment.name ? comment.name : comment.email);
+  const date = timestampToDate(comment.timestamp);
+  heading.innerHTML = `${displayName} <small class="text-muted"> at ${date}</small>`;
+  heading.classList.add("mt-0");
+  heading.classList.add("mb-1");
+  body.appendChild(heading);
+
+  // Text will contain the message the user left
+  const text = document.createTextNode(`${comment.message} (${comment.sentimentScore})`);
+  body.appendChild(text);
+  listNode.appendChild(body);
+  
+  return listNode;
+}
+
 function getComments() {
   // Remove comments from page
   removeCommentsFromPage();
@@ -68,19 +131,8 @@ function getComments() {
     console.log("Retrieved comments from server.")
     console.log(comments);
     for (i = 0; i < comments.length; ++i) {
-      let listNode = document.createElement("LI");
-      let displayName = (comments[i].name ? comments[i].name : comments[i].email);
-      let textNode = 
-          document.createTextNode(displayName + 
-                                  ' at ' + 
-                                  timestampToDate(comments[i].timestamp) + 
-                                  ': ' + 
-                                  comments[i].message + 
-                                  ' (' +
-                                  comments[i].sentimentScore + 
-                                  ')');
-      listNode.appendChild(textNode);
-      COMMENTS_LIST_DOC_ELEMENT.appendChild(listNode);
+      const comment = createComment(comments[i]);
+      COMMENTS_LIST_DOC_ELEMENT.appendChild(comment);
     }
   });
 
@@ -107,7 +159,7 @@ function getUserStatus() {
   fetch("/user")
   .then(res => res.json())
   .then((userStatus) => {
-    if (userStatus.isLoggedIn){
+    if (userStatus.isLoggedIn) {
       const commentForm = document.querySelector("form");
       commentForm.removeAttribute("hidden");
       USER_DIV.firstElementChild.innerHTML = LOG_OUT_PROMPT + "<a href='" + userStatus.url + "'>Log Out</a>";
@@ -117,5 +169,27 @@ function getUserStatus() {
   });
 }
 
+function navigateToCommentsSection() {
+  const url = new URL(window.location.href);
+  const section = url.searchParams.get("section");
+  if (section === "comments") {
+    // Remove the active class from the about me section of navigation.
+    document.querySelector("#navigation #aboutme-nav").classList.remove("active");
+
+    // Add the active class to the comments section of navigation.
+    document.querySelector("#navigation #comments-nav").classList.add("active");
+
+    // Remove the active class from the about me section of tab-content.
+    document.querySelector(".tab-content #aboutme").classList.remove("active");
+
+    //Add the active class to the comments section of tab-content.
+    document.querySelector(".tab-content #comments").classList.add("active");
+
+    // Scroll down to the content section.
+    document.getElementById("content").scrollIntoView();
+  }
+}
+
 getComments();
 getUserStatus();
+navigateToCommentsSection();
